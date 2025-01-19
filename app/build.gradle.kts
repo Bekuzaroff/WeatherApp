@@ -43,8 +43,8 @@ android {
 
 dependencies {
 
-    implementation ("com.google.dagger:dagger:2.x")
-    kapt ("com.google.dagger:dagger-compiler:2.x")
+    implementation ("com.google.dagger:dagger:2.0.0")
+    kapt ("com.google.dagger:dagger-compiler:2.0.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
 
