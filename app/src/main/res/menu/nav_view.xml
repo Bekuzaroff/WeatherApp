@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/home" android:icon="@drawable/reshot_icon_home_pr9h7um8xq"
+        android:title="home"/>
+    <item android:id="@+id/addcities" android:icon="@drawable/addcities"
+        android:title="add cities"/>
+    <item android:id="@+id/savedcities" android:icon="@drawable/saved"
+        android:title="saved cities"/>
+    <item android:id="@+id/settingscities" android:icon="@drawable/settings"
+        android:title="settings"/>
+
+</menu>
