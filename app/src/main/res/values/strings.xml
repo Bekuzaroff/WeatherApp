@@ -8,5 +8,6 @@
     <string name="in_f">in f</string>
     <string name="add_cities">add cities</string>
     <string name="saved_cities">saved cities</string>
+    <string name="search_a_city">search a city</string>
 
 </resources>

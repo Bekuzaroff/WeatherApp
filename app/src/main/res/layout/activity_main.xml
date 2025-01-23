@@ -9,12 +9,61 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <FrameLayout
-        android:id="@+id/fragmenthost"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/main_background"
+        android:orientation="vertical">
 
-    </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/bt_open_drawer"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/open_drawer" />
+
+            <EditText
+                android:id="@+id/ed_search_city"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/ed_search"
+                android:ems="10"
+                android:fontFamily="@font/ubuntu"
+                android:hint="@string/search_a_city"
+                android:inputType="text"
+                android:paddingStart="8dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="13sp" />
+
+            <ImageView
+                android:id="@+id/bt_search_city"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/search_bt" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/fragmenthost"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+    </LinearLayout>
 
 
     <LinearLayout
