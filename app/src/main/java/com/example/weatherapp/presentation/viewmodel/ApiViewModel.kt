@@ -1,5 +1,6 @@
 package com.example.weatherapp.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.domain.models.WeatherResponse
@@ -27,7 +28,8 @@ class ApiViewModel @Inject constructor(
         _weather_flow.emit(ResourceState.Loading())
 
         try {
-            val response = forecastUseCase(api_key, city)
+            val response = forecastUseCase(api_key = api_key, city = city)
+            Log.d("vm", "${response.body()}")
 
             if (response.isSuccessful){
                 _weather_flow.emit(ResourceState.Success(resource = response.body()))

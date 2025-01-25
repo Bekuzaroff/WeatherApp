@@ -15,7 +15,6 @@ class AppModule (val context: Context) {
 
 
     @Provides
-    @Singleton
     fun provideApiVMFactory(
         forecastUseCase: ForecastUseCase
     ): ApiVMFactory{

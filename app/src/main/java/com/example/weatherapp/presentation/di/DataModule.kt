@@ -12,7 +12,6 @@ import javax.inject.Singleton
 class DataModule {
 
     @Provides
-    @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -21,7 +20,6 @@ class DataModule {
     }
 
     @Provides
-    @Singleton
     fun provideAPIService(retrofit: Retrofit): WeatherService {
         return retrofit.create(WeatherService::class.java)
     }

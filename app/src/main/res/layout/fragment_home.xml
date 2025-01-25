@@ -24,6 +24,7 @@
 
 
                 <TextView
+                    android:id="@+id/tv_city"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/ubuntu"
@@ -36,6 +37,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/tv_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
@@ -48,6 +50,7 @@
 
 
                 <ImageView
+                    android:id="@+id/img_condition"
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:layout_gravity="center_horizontal"
@@ -56,6 +59,7 @@
                     android:src="@drawable/cloud" />
 
                 <TextView
+                    android:id="@+id/tv_temp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -67,6 +71,7 @@
             </FrameLayout>
 
             <TextView
+                android:id="@+id/tv_condition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

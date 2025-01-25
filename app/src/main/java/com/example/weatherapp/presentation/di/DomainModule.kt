@@ -12,12 +12,10 @@ import javax.inject.Singleton
 class DomainModule {
 
     @Provides
-    @Singleton
     fun provideForecastRepository(service: WeatherService): ForecastRepository
     = ForecastRepositoryImpl(service)
 
     @Provides
-    @Singleton
     fun provideForecastUseCase(repository: ForecastRepository): ForecastUseCase
         = ForecastUseCase(repository)
 
