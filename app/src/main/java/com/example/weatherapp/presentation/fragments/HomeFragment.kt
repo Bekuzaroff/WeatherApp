@@ -140,6 +140,10 @@ class HomeFragment : Fragment() {
                         binding.apply {
                             state.data?.let{ res ->
 
+                                val gson = Gson()
+                                val json = gson.toJson(res)
+
+                                weather_prefs.edit().putString(WEATHER_MODEL, json).commit()
 
 
                                 tvCity.text = res.location.name
