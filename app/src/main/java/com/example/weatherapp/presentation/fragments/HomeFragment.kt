@@ -13,14 +13,13 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity.LOCATION_SERVICE
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentHomeBinding
-import com.example.weatherapp.presentation.activities.MainActivity
+import com.example.weatherapp.domain.models.WeatherResponse
+import com.example.weatherapp.presentation.activities.MainActivity.Companion.IN_F
+import com.example.weatherapp.presentation.activities.MainActivity.Companion.IN_F_PREF
 import com.example.weatherapp.presentation.di.App
 import com.example.weatherapp.presentation.viewmodel.ApiVMFactory
 import com.example.weatherapp.presentation.viewmodel.ApiViewModel
@@ -31,13 +30,13 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.gson.Gson
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
 
 
 class HomeFragment : Fragment() {
+
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var location_client: FusedLocationProviderClient
@@ -46,8 +45,6 @@ class HomeFragment : Fragment() {
     lateinit var vm_factory: ApiVMFactory
 
     private lateinit var vm: ApiViewModel
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,11 +61,16 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater)
         location_client = LocationServices.getFusedLocationProviderClient(requireActivity())
 
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        val weather_prefs = requireActivity().getSharedPreferences(WEATHER_PREF_MODEL, MODE_PRIVATE)
+        val in_f_prefs = requireActivity().getSharedPreferences(IN_F_PREF, MODE_PRIVATE)
 
 
         vm = ViewModelProvider(this, vm_factory).get(ApiViewModel::class)
@@ -124,7 +126,12 @@ class HomeFragment : Fragment() {
                         binding.apply {
                             tvCity.text = "--"
                             tvDate.text = "--"
-                            tvTemp.text = "-- C°"
+
+                            if (in_f_prefs.getBoolean(IN_F, false)){
+                                tvTemp.text = "-- F°"
+                            }else{
+                                tvTemp.text = "-- C°"
+                            }
                             tvCondition.text = "--"
                         }
                     }
@@ -132,18 +139,23 @@ class HomeFragment : Fragment() {
                     is ResourceState.Success -> {
                         binding.apply {
                             state.data?.let{ res ->
-                                // add weather model to prefs, because it can be needed in other frs/activities
-                                val prefs = requireActivity().getSharedPreferences(WEATHER_PREF_MODEL, MODE_PRIVATE)
 
-                                //serialization of our object
-                                val gson = Gson()
 
-                                prefs.edit().putString(WEATHER_MODEL, gson.toJson(res)).commit()
 
                                 tvCity.text = res.location.name
                                 tvDate.text = res.location.localtime.substring(0, 10)
                                 tvCondition.text = "${res.current.condition.text}"
-                                tvTemp.text = "${res.current.temp_c} C°"
+
+                                if (in_f_prefs.getBoolean(IN_F, false)){
+                                    tvTemp.text = "${res.current.temp_f} F°"
+                                }else{
+                                    tvTemp.text = "${res.current.temp_c} C°"
+                                }
+
+
+
+
+
 
                                 when(res.current.condition.icon){
                                     //night rain
@@ -203,6 +215,12 @@ class HomeFragment : Fragment() {
 
             }
         }
+
+
+
+
+
+
 
     }
 

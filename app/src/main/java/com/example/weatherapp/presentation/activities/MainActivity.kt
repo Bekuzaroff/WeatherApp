@@ -1,6 +1,7 @@
 package com.example.weatherapp.presentation.activities
 
 import android.Manifest
+import android.content.SharedPreferences
 import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Bundle
@@ -20,6 +21,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -30,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var location_client: FusedLocationProviderClient
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,8 @@ class MainActivity : AppCompatActivity() {
 
         // start fragment
         NavPoints.navigateTo(NavPoints.Home_fr(), supportFragmentManager, null, null)
+
+        //navigation with drawer
         binding.apply {
             tvHome.setOnClickListener {
                 NavPoints.navigateTo(NavPoints.Home_fr(), supportFragmentManager, null, null)
@@ -69,29 +73,46 @@ class MainActivity : AppCompatActivity() {
 
 
 
-            inFSwitch.setOnClickListener {
+
+
+
+
+            val prefs: SharedPreferences = getSharedPreferences(IN_F_PREF, MODE_PRIVATE)
+
+            //change the state of tempirature (F/C)
+            fSwitch.setOnClickListener {
                 lifecycleScope.launch {
-                    if (inFSwitch.isActivated){
-                        in_f.emit(true)
+                    if(fSwitch.isChecked){
+
+                        prefs.edit().putBoolean(IN_F, true).commit()
+
                     }else{
-                        in_f.emit(false)
+
+                        prefs.edit().putBoolean(IN_F, false).commit()
+
                     }
                 }
 
             }
+
+
+
+
 
         }
 
 
 
 
+
+
     }
+
 
     companion object{
-        val in_f: MutableStateFlow<Boolean> = MutableStateFlow(false)
+        const val IN_F_PREF = "in_f_pref"
+        const val IN_F = "in_f"
     }
-
-
 
 
 

@@ -29,7 +29,6 @@ class ApiViewModel @Inject constructor(
 
         try {
             val response = forecastUseCase(api_key = api_key, city = city)
-            Log.d("vm", "${response.body()}")
 
             if (response.isSuccessful){
                 _weather_flow.emit(ResourceState.Success(resource = response.body()))
