@@ -1,5 +1,7 @@
 package com.example.weatherapp.domain.models
 
+import java.io.Serializable
+
 data class Current(
     val cloud: Int,
     val condition: Condition,
@@ -21,4 +23,4 @@ data class Current(
     val wind_dir: String,
     val wind_kph: Double,
     val wind_mph: Double
-)
+): Serializable

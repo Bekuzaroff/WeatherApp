@@ -12,5 +12,6 @@
     <string name="location_access_granted">location access granted</string>
     <string name="please_turn_the_location_on">please turn the location on</string>
     <string name="no_location_access">no location access</string>
+    <string name="error">something went wrong</string>
 
 </resources>

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.ActivityMainBinding
 import com.example.weatherapp.presentation.di.App
@@ -19,6 +20,9 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 
@@ -62,12 +66,29 @@ class MainActivity : AppCompatActivity() {
             btOpenDrawer.setOnClickListener {
                 drawer.openDrawer(Gravity.LEFT)
             }
+
+
+
+            inFSwitch.setOnClickListener {
+                lifecycleScope.launch {
+                    if (inFSwitch.isActivated){
+                        in_f.emit(true)
+                    }else{
+                        in_f.emit(false)
+                    }
+                }
+
+            }
+
         }
 
 
 
 
+    }
 
+    companion object{
+        val in_f: MutableStateFlow<Boolean> = MutableStateFlow(false)
     }
 
 

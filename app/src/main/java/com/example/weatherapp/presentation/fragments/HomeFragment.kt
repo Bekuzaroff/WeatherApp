@@ -12,10 +12,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity.LOCATION_SERVICE
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentHomeBinding
 import com.example.weatherapp.presentation.activities.MainActivity
@@ -28,6 +30,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -129,22 +132,78 @@ class HomeFragment : Fragment() {
                     is ResourceState.Success -> {
                         binding.apply {
                             state.data?.let{ res ->
+                                // add weather model to prefs, because it can be needed in other frs/activities
+                                val prefs = requireActivity().getSharedPreferences(WEATHER_PREF_MODEL, MODE_PRIVATE)
+
+                                //serialization of our object
+                                val gson = Gson()
+
+                                prefs.edit().putString(WEATHER_MODEL, gson.toJson(res)).commit()
+
                                 tvCity.text = res.location.name
                                 tvDate.text = res.location.localtime.substring(0, 10)
-                                tvTemp.text = "${res.current.temp_c} C°"
                                 tvCondition.text = "${res.current.condition.text}"
+                                tvTemp.text = "${res.current.temp_c} C°"
+
+                                when(res.current.condition.icon){
+                                    //night rain
+                                    "//cdn.weatherapi.com/weather/64x64/night/176.png" -> {
+                                        imgCondition.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
+                                    }
+                                    //day rain
+                                    "https://cdn.weatherapi.com/weather/64x64/day/296.png" -> {
+                                        imgCondition.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
+                                    }
+                                    //cloudy
+                                    "https://cdn.weatherapi.com/weather/64x64/day/116.png" -> {
+                                        imgCondition.setImageResource(R.drawable.cloud)
+                                    }
+                                    //night cloudy
+                                    "https://cdn.weatherapi.com/weather/64x64/night/116.png" -> {
+                                        imgCondition.setImageResource(R.drawable.cloud_moon)
+                                    }
+                                    //day sunny
+                                    "https://cdn.weatherapi.com/weather/64x64/day/113.png" -> {
+                                        imgCondition.setImageResource(R.drawable.reshot_icon_sun_s3a8p7lhkw)
+                                    }
+                                    //night clear
+                                    "https://cdn.weatherapi.com/weather/64x64/night/113.png" -> {
+                                        imgCondition.setImageResource(R.drawable.reshot_icon_moon_crescent_sd4enbav8k)
+                                    }
+                                    //overcast day/night
+                                    "//cdn.weatherapi.com/weather/64x64/night/122.png" -> {
+                                        imgCondition.setImageResource(R.drawable.cloud)
+                                    }
+                                    //day rain
+                                    "//cdn.weatherapi.com/weather/64x64/day/176.png" -> {
+                                        imgCondition.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
+                                    }
+                                    //mist
+                                    "//cdn.weatherapi.com/weather/64x64/night/143.png" -> {
+                                        imgCondition.setImageResource(R.drawable.cloud)
+                                    }
+                                    //rain
+                                    "//cdn.weatherapi.com/weather/64x64/day/119.png" -> {
+                                        imgCondition.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
+                                    }
+                                    //rain night
+                                    "//cdn.weatherapi.com/weather/64x64/night/119.png" -> {
+                                        imgCondition.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
+                                    }
+                                }
                             }
 
                         }
                     }
 
                     is ResourceState.Error -> {
-
+                        Toast.makeText(requireContext(), R.string.error, Toast.LENGTH_LONG).show()
                     }
                 }
 
             }
         }
+
     }
 
     // IS GPS SERVICE IS ENABLED
@@ -157,6 +216,12 @@ class HomeFragment : Fragment() {
             e.printStackTrace()
         }
         return false
+    }
+
+
+    companion object{
+        const val WEATHER_PREF_MODEL = "weather_pref_model"
+        const val WEATHER_MODEL = "weather_model"
     }
 
 

@@ -1,5 +1,7 @@
 package com.example.weatherapp.domain.models
 
+import java.io.Serializable
+
 data class Location(
     val country: String,
     val lat: Double,
@@ -9,4 +11,4 @@ data class Location(
     val name: String,
     val region: String,
     val tz_id: String
-)
+): Serializable
