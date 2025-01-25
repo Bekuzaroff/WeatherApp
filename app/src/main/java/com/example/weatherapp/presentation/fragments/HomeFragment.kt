@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentHomeBinding
-import com.example.weatherapp.domain.models.WeatherResponse
 import com.example.weatherapp.presentation.activities.MainActivity.Companion.IN_F
 import com.example.weatherapp.presentation.activities.MainActivity.Companion.IN_F_PREF
 import com.example.weatherapp.presentation.di.App

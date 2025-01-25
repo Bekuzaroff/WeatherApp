@@ -79,6 +79,8 @@ class MainActivity : AppCompatActivity() {
 
             val prefs: SharedPreferences = getSharedPreferences(IN_F_PREF, MODE_PRIVATE)
 
+            fSwitch.isChecked = prefs.getBoolean(IN_F, false)
+
             //change the state of tempirature (F/C)
             fSwitch.setOnClickListener {
                 lifecycleScope.launch {
