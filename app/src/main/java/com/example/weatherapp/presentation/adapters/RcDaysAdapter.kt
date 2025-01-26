@@ -9,7 +9,9 @@ import com.example.weatherapp.databinding.OneWeatherTimeBinding
 import com.example.weatherapp.domain.models.Forecastday
 import com.example.weatherapp.domain.models.Hour
 
-class RcDaysAdapter : RecyclerView.Adapter<RcDaysAdapter.RcDaysViewHolder>() {
+class RcDaysAdapter(
+    val events: ClickEvents
+) : RecyclerView.Adapter<RcDaysAdapter.RcDaysViewHolder>() {
 
     private var day_list: List<Forecastday> = listOf()
 
@@ -78,6 +80,11 @@ class RcDaysAdapter : RecyclerView.Adapter<RcDaysAdapter.RcDaysViewHolder>() {
                 "//cdn.weatherapi.com/weather/64x64/night/119.png" -> {
                     imgConditionDay.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
                 }
+
+            }
+
+            holder.itemView.setOnClickListener {
+                events.itemClick()
             }
         }
     }
@@ -86,5 +93,9 @@ class RcDaysAdapter : RecyclerView.Adapter<RcDaysAdapter.RcDaysViewHolder>() {
     fun add_list(list: List<Forecastday>){
         day_list = list
         notifyDataSetChanged()
+    }
+
+    interface ClickEvents{
+        fun itemClick()
     }
 }

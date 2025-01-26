@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentHomeBinding
+import com.example.weatherapp.presentation.activities.MainActivity
 import com.example.weatherapp.presentation.activities.MainActivity.Companion.IN_F
 import com.example.weatherapp.presentation.activities.MainActivity.Companion.IN_F_PREF
 import com.example.weatherapp.presentation.adapters.RcDaysAdapter
@@ -66,7 +67,7 @@ class HomeFragment : Fragment() {
         location_client = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         hour_adapter = RcHoursAdapter()
-        day_adapter = RcDaysAdapter()
+        day_adapter = RcDaysAdapter(requireActivity() as MainActivity)
 
 
         return binding.root

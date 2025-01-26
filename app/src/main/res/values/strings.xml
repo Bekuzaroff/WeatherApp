@@ -13,5 +13,10 @@
     <string name="please_turn_the_location_on">please turn the location on</string>
     <string name="no_location_access">no location access</string>
     <string name="error">something went wrong</string>
+    <string name="sunrise">sunrise</string>
+    <string name="sunset">sunset</string>
+    <string name="rain">rain</string>
+    <string name="humidity">humidity</string>
+    <string name="chance_of_snow">chance of snow</string>
 
 </resources>

@@ -25,10 +25,19 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/bt_back_detailes"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"
+                app:srcCompat="@drawable/backbt" />
+
+            <ImageView
                 android:id="@+id/bt_open_drawer"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
+                android:visibility="visible"
                 app:srcCompat="@drawable/open_drawer" />
 
             <EditText
