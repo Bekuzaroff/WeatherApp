@@ -49,6 +49,8 @@ class MainActivity : AppCompatActivity() {
 
         //navigation with drawer
         binding.apply {
+            //getting from nav points current navigation
+            // and go there by clicking the textview from drawer menu
             tvHome.setOnClickListener {
                 NavPoints.navigateTo(NavPoints.Home_fr(), supportFragmentManager, null, null)
                 drawer.closeDrawer(Gravity.LEFT)
@@ -77,8 +79,10 @@ class MainActivity : AppCompatActivity() {
 
 
 
+            //prefs for switch state
             val prefs: SharedPreferences = getSharedPreferences(IN_F_PREF, MODE_PRIVATE)
 
+            //save the beginning state of switch
             fSwitch.isChecked = prefs.getBoolean(IN_F, false)
 
             //change the state of tempirature (F/C)

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_background"
     tools:context=".presentation.fragments.HomeFragment">
 
 
@@ -83,7 +84,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="270dp"
+                android:layout_height="290dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
                 android:layout_marginBottom="5dp"
@@ -92,15 +93,20 @@
                 app:cardElevation="0dp">
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rc_hours"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/one_weather_time" />
             </androidx.cardview.widget.CardView>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rc_days"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp" />
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal"
+                tools:listitem="@layout/one_day_weather" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>
