@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.transition.Visibility
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.ActivityMainBinding
+import com.example.weatherapp.domain.models.Forecastday
 import com.example.weatherapp.presentation.adapters.RcDaysAdapter
 import com.example.weatherapp.presentation.di.App
 import com.example.weatherapp.presentation.fragments.HomeFragment
@@ -86,32 +87,6 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
 
 
 
-
-            //prefs for switch state
-            val prefs: SharedPreferences = getSharedPreferences(IN_F_PREF, MODE_PRIVATE)
-
-            //save the beginning state of switch
-            fSwitch.isChecked = prefs.getBoolean(IN_F, false)
-
-            //change the state of tempirature (F/C)
-            fSwitch.setOnClickListener {
-                lifecycleScope.launch {
-                    if(fSwitch.isChecked){
-
-                        prefs.edit().putBoolean(IN_F, true).commit()
-
-                    }else{
-
-                        prefs.edit().putBoolean(IN_F, false).commit()
-
-                    }
-                }
-
-            }
-
-
-
-
             binding.btBackDetailes.setOnClickListener {
                 NavPoints.navigateTo(
                     NavPoints.Home_fr(), supportFragmentManager, null, null,
@@ -138,19 +113,16 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
     }
 
 
-    companion object{
-        const val IN_F_PREF = "in_f_pref"
-        const val IN_F = "in_f"
-    }
 
 
 
-    override fun itemClick() {
+
+    override fun itemClick(day: Forecastday) {
         binding.btOpenDrawer.visibility = View.GONE
         binding.edSearchCity.visibility = View.GONE
         binding.btSearchCity.visibility = View.GONE
         binding.btBackDetailes.visibility = View.VISIBLE
-        NavPoints.navigateTo(NavPoints.Detailed_fragment(), supportFragmentManager,intent, this)
+        NavPoints.navigateTo(NavPoints.Detailed_fragment(arg = day), supportFragmentManager,intent, this)
     }
 
 

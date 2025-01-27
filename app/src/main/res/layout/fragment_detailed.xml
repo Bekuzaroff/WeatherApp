@@ -24,20 +24,7 @@
 
 
                 <TextView
-                    android:id="@+id/tv_city"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/ubuntu"
-                    android:paddingStart="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="15dp"
-                    android:paddingBottom="5dp"
-                    android:text="London"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/tv_date"
+                    android:id="@+id/tv_date_detailed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
@@ -45,39 +32,39 @@
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
                     android:paddingBottom="5dp"
-                    android:text="13.01.2025"
+                    android:text="--.--.--"
                     android:textColor="@color/white" />
 
 
                 <ImageView
-                    android:id="@+id/img_condition"
+                    android:id="@+id/img_condition_detailed"
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/cloud" />
+                    tools:src="@tools:sample/avatars"/>
 
                 <TextView
-                    android:id="@+id/tv_temp"
+                    android:id="@+id/tv_temp_detailed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="100dp"
                     android:fontFamily="@font/ubuntu_bold"
-                    android:text="28 C°"
+                    android:text="-- C°"
                     android:textColor="@color/white"
                     android:textSize="50sp" />
             </FrameLayout>
 
             <TextView
-                android:id="@+id/tv_condition"
+                android:id="@+id/tv_condition_detailed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/ubuntu"
                 android:paddingBottom="10dp"
-                android:text="partly cloudy"
+                android:text="--"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
@@ -92,18 +79,19 @@
                 app:cardElevation="0dp">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rc_hours"
+                    android:id="@+id/rc_hours_detailed"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     tools:listitem="@layout/one_weather_time" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:layout_marginTop="25dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="25dp"
                 android:backgroundTint="#14FFFFFF"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="0dp">
@@ -114,9 +102,10 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/sunrise"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="sunrise: 08:01"
+                        android:text="--"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
                         android:textSize="15sp"
@@ -124,9 +113,10 @@
                         android:textColor="@color/white"/>
 
                     <TextView
+                        android:id="@+id/sunset"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="sunset: 20:01"
+                        android:text="--"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
                         android:textSize="15sp"
@@ -134,9 +124,10 @@
                         android:textColor="@color/white"/>
 
                     <TextView
+                        android:id="@+id/rain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="rain:"
+                        android:text="--"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
                         android:textSize="15sp"
@@ -144,9 +135,10 @@
                         android:textColor="@color/white"/>
 
                     <TextView
+                        android:id="@+id/humidity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="humidity 90%"
+                        android:text="--"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
                         android:textSize="15sp"
@@ -154,9 +146,21 @@
                         android:textColor="@color/white"/>
 
                     <TextView
+                        android:id="@+id/chance_of_snow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="chance of snow"
+                        android:text="--"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/ubuntu"
+                        android:textColor="@color/white"/>
+
+                    <TextView
+                        android:id="@+id/wind"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
                         android:textSize="15sp"

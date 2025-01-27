@@ -55,7 +55,11 @@ sealed class NavPoints() {
                 }
                 is Detailed_fragment -> {
 
+                    navPoints.arg?.let { model ->
+                        bundle.putSerializable("weather_model", model)
+                    }
                     val fr = DetailedFragment()
+                    fr.arguments = bundle
                     fr_manager!!.beginTransaction().replace(R.id.fragmenthost,
                         fr).commit()
                 }

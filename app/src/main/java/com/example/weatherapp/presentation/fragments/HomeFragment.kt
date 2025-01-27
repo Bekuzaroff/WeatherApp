@@ -18,8 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentHomeBinding
 import com.example.weatherapp.presentation.activities.MainActivity
-import com.example.weatherapp.presentation.activities.MainActivity.Companion.IN_F
-import com.example.weatherapp.presentation.activities.MainActivity.Companion.IN_F_PREF
 import com.example.weatherapp.presentation.adapters.RcDaysAdapter
 import com.example.weatherapp.presentation.adapters.RcHoursAdapter
 import com.example.weatherapp.presentation.di.App
@@ -61,7 +59,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        (activity!!.application as App).component.inject(this)
+        (requireActivity().application as App).component.inject(this)
 
         binding = FragmentHomeBinding.inflate(inflater)
         location_client = LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -89,7 +87,6 @@ class HomeFragment : Fragment() {
 
         // SHARED PREFS FOR SAVING WEATHER MODEL AND THE SWITCH STATE
         val weather_prefs = requireActivity().getSharedPreferences(WEATHER_PREF_MODEL, MODE_PRIVATE)
-        val in_f_prefs = requireActivity().getSharedPreferences(IN_F_PREF, MODE_PRIVATE)
 
 
         //VIEWMODEL INIT
@@ -156,11 +153,7 @@ class HomeFragment : Fragment() {
                             tvCity.text = "--"
                             tvDate.text = "--"
 
-                            if (in_f_prefs.getBoolean(IN_F, false)){
-                                tvTemp.text = "-- F°"
-                            }else{
-                                tvTemp.text = "-- C°"
-                            }
+                            tvTemp.text = "-- C°"
                             tvCondition.text = "--"
                         }
                     }
@@ -195,12 +188,7 @@ class HomeFragment : Fragment() {
                                 tvDate.text = res.location.localtime.substring(0, 10)
                                 tvCondition.text = "${res.current.condition.text}"
 
-                                //we get the switch state and show tempirature in faringate or celcium
-                                if (in_f_prefs.getBoolean(IN_F, false)){
-                                    tvTemp.text = "${res.current.temp_f} F°"
-                                }else{
-                                    tvTemp.text = "${res.current.temp_c} C°"
-                                }
+                                tvTemp.text = "${res.current.temp_c} C°"
 
 
 

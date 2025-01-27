@@ -84,7 +84,7 @@ class RcDaysAdapter(
             }
 
             holder.itemView.setOnClickListener {
-                events.itemClick()
+                events.itemClick(day_list[position])
             }
         }
     }
@@ -96,6 +96,6 @@ class RcDaysAdapter(
     }
 
     interface ClickEvents{
-        fun itemClick()
+        fun itemClick(day: Forecastday)
     }
 }

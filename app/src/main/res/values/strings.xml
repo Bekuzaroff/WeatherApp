@@ -3,7 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="weather_app">Weather App</string>
-    <string name="best_application">best application</string>
+    <string name="settings">settings</string>
     <string name="home">home</string>
     <string name="in_f">in f</string>
     <string name="add_cities">add cities</string>
@@ -18,5 +18,6 @@
     <string name="rain">rain</string>
     <string name="humidity">humidity</string>
     <string name="chance_of_snow">chance of snow</string>
+    <string name="wind">wind</string>
 
 </resources>
