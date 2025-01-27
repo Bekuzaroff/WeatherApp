@@ -14,6 +14,7 @@ import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentDetailedBinding
 import com.example.weatherapp.domain.models.Forecastday
 import com.example.weatherapp.presentation.adapters.RcHoursAdapter
+import com.example.weatherapp.presentation.fragments.HomeFragment.Companion.WEATHER_PREF_MODEL
 import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.IN_F
 import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.IN_MH
 import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.SETTINGS_PREF
@@ -30,6 +31,7 @@ class DetailedFragment : Fragment() {
     private lateinit var adapter: RcHoursAdapter
 
     private var settings_prefs: SharedPreferences ?= null
+
     private var in_f: Boolean ?= null
     private var in_mh: Boolean ?= null
 
@@ -61,6 +63,7 @@ class DetailedFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         settings_prefs = requireActivity().getSharedPreferences(SETTINGS_PREF,MODE_PRIVATE)
+
         if (settings_prefs != null){
             in_f = settings_prefs!!.getBoolean(IN_F, false)
             in_mh = settings_prefs!!.getBoolean(IN_MH, false)

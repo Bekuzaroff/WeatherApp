@@ -91,7 +91,8 @@ class HomeFragment : Fragment() {
         binding.rcDays.adapter = day_adapter
         binding.rcDays.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-
+        //VIEWMODEL INIT
+        vm = ViewModelProvider(requireActivity(), vm_factory).get(ApiViewModel::class)
 
 
 
@@ -172,6 +173,9 @@ class HomeFragment : Fragment() {
                     }
                 }
 
+
+
+
             }
 
 
@@ -181,8 +185,7 @@ class HomeFragment : Fragment() {
 
 
 
-        //VIEWMODEL INIT
-        vm = ViewModelProvider(this, vm_factory).get(ApiViewModel::class)
+
         // GETTING LOCATION PERMISSIONS
         val location_perm_request = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
@@ -209,6 +212,8 @@ class HomeFragment : Fragment() {
 
                                 if (model == null){
                                     var cityName = address[0].locality
+                                    weather_prefs.edit().putString(CITY_NAME, cityName).commit()
+
                                     vm.getWeatherForecast(API_KEY, cityName)
                                 }
 
@@ -382,6 +387,8 @@ class HomeFragment : Fragment() {
         // prefs names
         const val WEATHER_PREF_MODEL = "weather_pref_model"
         const val WEATHER_MODEL = "weather_model"
+
+        const val CITY_NAME = "CITY_NAME"
     }
 
 
