@@ -21,6 +21,8 @@ import com.example.weatherapp.domain.models.Forecastday
 import com.example.weatherapp.presentation.adapters.RcDaysAdapter
 import com.example.weatherapp.presentation.di.App
 import com.example.weatherapp.presentation.fragments.HomeFragment
+import com.example.weatherapp.presentation.fragments.HomeFragment.Companion.WEATHER_MODEL
+import com.example.weatherapp.presentation.fragments.HomeFragment.Companion.WEATHER_PREF_MODEL
 import com.example.weatherapp.utils.NavPoints
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -43,6 +45,7 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+
 
 
 
@@ -110,6 +113,12 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
 
 
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val weather_prefs = getSharedPreferences(WEATHER_PREF_MODEL, MODE_PRIVATE)
+        weather_prefs.edit().remove(WEATHER_MODEL).commit()
     }
 
 

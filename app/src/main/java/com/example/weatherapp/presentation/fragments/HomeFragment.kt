@@ -1,9 +1,11 @@
 package com.example.weatherapp.presentation.fragments
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentHomeBinding
+import com.example.weatherapp.domain.models.WeatherResponse
 import com.example.weatherapp.presentation.activities.MainActivity
 import com.example.weatherapp.presentation.adapters.RcDaysAdapter
 import com.example.weatherapp.presentation.adapters.RcHoursAdapter
@@ -49,6 +52,8 @@ class HomeFragment : Fragment() {
     private lateinit var hour_adapter: RcHoursAdapter
     private lateinit var day_adapter: RcDaysAdapter
 
+    private val gson = Gson()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -71,6 +76,8 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -87,6 +94,76 @@ class HomeFragment : Fragment() {
 
         // SHARED PREFS FOR SAVING WEATHER MODEL AND THE SWITCH STATE
         val weather_prefs = requireActivity().getSharedPreferences(WEATHER_PREF_MODEL, MODE_PRIVATE)
+
+        val str_model = weather_prefs.getString(WEATHER_MODEL, null)
+        if(str_model != null) {
+            val model = gson.fromJson(str_model, WeatherResponse::class.java)
+
+            hour_adapter.add_list(model.forecast.forecastday[0].hour)
+            day_adapter.add_list(model.forecast.forecastday)
+
+
+            binding.apply {
+                tvCity.text = model.location.name
+                tvDate.text = model.location.localtime.substring(0, 10)
+                tvCondition.text = "${model.current.condition.text}"
+
+                tvTemp.text = "${model.current.temp_c} C°"
+
+                when(model.current.condition.icon){
+                    //night rain
+                    "//cdn.weatherapi.com/weather/64x64/night/176.png" -> {
+                        imgCondition.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
+                    }
+                    //day rain
+                    "//cdn.weatherapi.com/weather/64x64/day/296.png" -> {
+                        imgCondition.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
+                    }
+                    //cloudy
+                    "//cdn.weatherapi.com/weather/64x64/day/116.png" -> {
+                        imgCondition.setImageResource(R.drawable.cloud)
+                    }
+                    //night cloudy
+                    "//cdn.weatherapi.com/weather/64x64/night/116.png" -> {
+                        imgCondition.setImageResource(R.drawable.cloud_moon)
+                    }
+                    //day sunny
+                    "//cdn.weatherapi.com/weather/64x64/day/113.png" -> {
+                        imgCondition.setImageResource(R.drawable.reshot_icon_sun_s3a8p7lhkw)
+                    }
+                    //night clear
+                    "//cdn.weatherapi.com/weather/64x64/night/113.png" -> {
+                        imgCondition.setImageResource(R.drawable.reshot_icon_moon_crescent_sd4enbav8k)
+                    }
+                    //overcast day/night
+                    "//cdn.weatherapi.com/weather/64x64/night/122.png" -> {
+                        imgCondition.setImageResource(R.drawable.cloud)
+                    }
+                    //day rain
+                    "//cdn.weatherapi.com/weather/64x64/day/176.png" -> {
+                        imgCondition.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
+                    }
+                    //mist
+                    "//cdn.weatherapi.com/weather/64x64/night/143.png" -> {
+                        imgCondition.setImageResource(R.drawable.cloud)
+                    }
+                    //rain
+                    "//cdn.weatherapi.com/weather/64x64/day/119.png" -> {
+                        imgCondition.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
+                    }
+                    //rain night
+                    "//cdn.weatherapi.com/weather/64x64/night/119.png" -> {
+                        imgCondition.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
+                    }
+                }
+
+            }
+
+
+
+        }
+
+
 
 
         //VIEWMODEL INIT
@@ -114,8 +191,13 @@ class HomeFragment : Fragment() {
                             val geoCoder = Geocoder(requireContext(), Locale.getDefault())
                             val address = geoCoder.getFromLocation(it.result.latitude,it.result.longitude,1)
                             if (address != null){
-                                var cityName = address[0].locality
-                                vm.getWeatherForecast(API_KEY, cityName)
+                                val str_model = weather_prefs.getString(WEATHER_MODEL, null)
+
+                                if (str_model == null){
+                                    var cityName = address[0].locality
+                                    vm.getWeatherForecast(API_KEY, cityName)
+                                }
+
                             }
 
                         }
@@ -149,12 +231,16 @@ class HomeFragment : Fragment() {
 
                     // when the data state is loading we show in all textviews only "--"
                     is ResourceState.Loading -> {
+                        val str_model = weather_prefs.getString(WEATHER_MODEL, null)
                         binding.apply {
-                            tvCity.text = "--"
-                            tvDate.text = "--"
+                            if (str_model == null){
+                                tvCity.text = "--"
+                                tvDate.text = "--.--.--"
+                                tvCondition.text = "--"
+                                tvTemp.text = "-- C°"
+                            }
 
-                            tvTemp.text = "-- C°"
-                            tvCondition.text = "--"
+
                         }
                     }
 
@@ -163,14 +249,7 @@ class HomeFragment : Fragment() {
                         binding.apply {
                             state.data?.let{ res ->
 
-
-
-
-
-
-
                                 //convert model to json so we could pass it into shared prefs
-                                val gson = Gson()
                                 val json = gson.toJson(res)
 
                                 //adding to shared prefs weather data
@@ -184,6 +263,7 @@ class HomeFragment : Fragment() {
                                 day_adapter.add_list(state.data.forecast.forecastday)
 
 
+                                Log.d("tagg", "${ state.data }")
                                 tvCity.text = res.location.name
                                 tvDate.text = res.location.localtime.substring(0, 10)
                                 tvCondition.text = "${res.current.condition.text}"
@@ -265,6 +345,8 @@ class HomeFragment : Fragment() {
 
 
 
+
+
     }
 
     // IS GPS SERVICE IS ENABLED
@@ -287,6 +369,8 @@ class HomeFragment : Fragment() {
         const val WEATHER_PREF_MODEL = "weather_pref_model"
         const val WEATHER_MODEL = "weather_model"
     }
+
+
 
 
 }
