@@ -20,6 +20,5 @@
     <string name="humidity">humidity</string>
     <string name="chance_of_snow">chance of snow</string>
     <string name="wind">wind</string>
-    <string name="you_not_enter_city_name">you did not enter city name</string>
 
 </resources>
