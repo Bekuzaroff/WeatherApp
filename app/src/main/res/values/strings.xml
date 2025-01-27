@@ -5,7 +5,8 @@
     <string name="weather_app">Weather App</string>
     <string name="settings">settings</string>
     <string name="home">home</string>
-    <string name="in_f">in f</string>
+    <string name="in_f">in F</string>
+    <string name="m_h">m/h</string>
     <string name="add_cities">add cities</string>
     <string name="saved_cities">saved cities</string>
     <string name="search_a_city">search a city</string>

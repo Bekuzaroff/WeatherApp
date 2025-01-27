@@ -1,6 +1,8 @@
 package com.example.weatherapp.presentation.fragments
 
 import android.annotation.SuppressLint
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,8 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentDetailedBinding
 import com.example.weatherapp.domain.models.Forecastday
-import com.example.weatherapp.domain.models.WeatherResponse
 import com.example.weatherapp.presentation.adapters.RcHoursAdapter
+import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.IN_F
+import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.IN_MH
+import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.SETTINGS_PREF
 
 
 class DetailedFragment : Fragment() {
@@ -24,6 +28,10 @@ class DetailedFragment : Fragment() {
     private var model: Forecastday ?= null
 
     private lateinit var adapter: RcHoursAdapter
+
+    private var settings_prefs: SharedPreferences ?= null
+    private var in_f: Boolean ?= null
+    private var in_mh: Boolean ?= null
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +52,7 @@ class DetailedFragment : Fragment() {
     ): View? {
 
         binding = FragmentDetailedBinding.inflate(inflater)
-        adapter = RcHoursAdapter()
+        adapter = RcHoursAdapter(requireActivity())
 
         return binding.root
     }
@@ -52,13 +60,34 @@ class DetailedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        settings_prefs = requireActivity().getSharedPreferences(SETTINGS_PREF,MODE_PRIVATE)
+        if (settings_prefs != null){
+            in_f = settings_prefs!!.getBoolean(IN_F, false)
+            in_mh = settings_prefs!!.getBoolean(IN_MH, false)
+        }
+
         binding.apply {
             rcHoursDetailed.adapter = adapter
             rcHoursDetailed.layoutManager = LinearLayoutManager(requireContext())
             if (model != null){
                 adapter.add_list(model!!.hour)
             }
-            tvTempDetailed.text = "${model?.day?.avgtemp_c} C°"
+
+            in_f?.let {
+                if (it){
+                    tvTempDetailed.text = "${model?.day?.maxtemp_f} F°"
+                }else{
+                    tvTempDetailed.text = "${model?.day?.maxtemp_c} C°"
+                }
+            }
+            in_mh?.let {
+                if (it){
+                    wind.text = "${model?.day?.maxwind_mph} m/h"
+                }else{
+                    wind.text = "${model?.day?.maxwind_kph} km/h"
+                }
+            }
+
             tvDateDetailed.text = "${model?.date}"
             tvConditionDetailed.text = "${model?.day?.condition?.text}"
             sunset.text = "${model?.astro?.sunset}"
@@ -66,7 +95,6 @@ class DetailedFragment : Fragment() {
             humidity.text = "${model?.day?.avghumidity}%"
             rain.text = "${model?.day?.daily_will_it_rain}%"
             chanceOfSnow.text = "${model?.day?.daily_chance_of_snow}%"
-            wind.text = "${model?.day?.maxwind_kph} km/h"
 
 
             when(model?.day?.condition?.icon){

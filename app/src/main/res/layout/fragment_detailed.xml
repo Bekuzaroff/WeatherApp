@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_background"
     tools:context=".presentation.fragments.DetailedFragment">
 
     <LinearLayout
@@ -43,14 +42,14 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:scaleType="centerCrop"
-                    tools:src="@tools:sample/avatars"/>
+                    tools:src="@tools:sample/avatars" />
 
                 <TextView
                     android:id="@+id/tv_temp_detailed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="120dp"
                     android:fontFamily="@font/ubuntu_bold"
                     android:text="-- C°"
                     android:textColor="@color/white"
@@ -86,10 +85,10 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:layout_marginTop="25dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="25dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginEnd="25dp"
                 android:layout_marginBottom="25dp"
                 android:backgroundTint="#14FFFFFF"
@@ -105,67 +104,67 @@
                         android:id="@+id/sunrise"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="--"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
-                        android:textSize="15sp"
                         android:fontFamily="@font/ubuntu"
-                        android:textColor="@color/white"/>
+                        android:text="--"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/sunset"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="--"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
-                        android:textSize="15sp"
                         android:fontFamily="@font/ubuntu"
-                        android:textColor="@color/white"/>
+                        android:text="--"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/rain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="--"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
-                        android:textSize="15sp"
                         android:fontFamily="@font/ubuntu"
-                        android:textColor="@color/white"/>
+                        android:text="--"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/humidity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="--"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
-                        android:textSize="15sp"
                         android:fontFamily="@font/ubuntu"
-                        android:textColor="@color/white"/>
+                        android:text="--"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/chance_of_snow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="--"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
-                        android:textSize="15sp"
                         android:fontFamily="@font/ubuntu"
-                        android:textColor="@color/white"/>
+                        android:text="--"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/wind"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="--"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
-                        android:textSize="15sp"
                         android:fontFamily="@font/ubuntu"
-                        android:textColor="@color/white"/>
+                        android:text="--"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
 
 
                 </LinearLayout>

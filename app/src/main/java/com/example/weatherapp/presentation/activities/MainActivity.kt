@@ -53,20 +53,20 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
 
 
         // start fragment
-        NavPoints.navigateTo(NavPoints.Home_fr(), supportFragmentManager, null, null)
+        NavPoints.navigateTo(NavPoints.Home_fr(), supportFragmentManager)
 
         //navigation with drawer
         binding.apply {
             //getting from nav points current navigation
             // and go there by clicking the textview from drawer menu
             tvHome.setOnClickListener {
-                NavPoints.navigateTo(NavPoints.Home_fr(), supportFragmentManager, null, null,
+                NavPoints.navigateTo(NavPoints.Home_fr(), supportFragmentManager,
                     )
                 drawer.closeDrawer(Gravity.LEFT)
             }
             tvAddcities.setOnClickListener {
                 NavPoints.navigateTo(
-                    NavPoints.Add_cities_fr(), supportFragmentManager, null, null,
+                    NavPoints.Add_cities_fr(), supportFragmentManager,
 
                 )
                 drawer.closeDrawer(Gravity.LEFT)
@@ -74,9 +74,16 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
 
             tvSavedcities.setOnClickListener {
                 NavPoints.navigateTo(
-                    NavPoints.Saved_cities_fr(), supportFragmentManager, null, null,
+                    NavPoints.Saved_cities_fr(), supportFragmentManager,
 
                 )
+                drawer.closeDrawer(Gravity.LEFT)
+            }
+            tvSettings.setOnClickListener {
+                NavPoints.navigateTo(
+                    NavPoints.Settings_fragment(), supportFragmentManager,
+
+                    )
                 drawer.closeDrawer(Gravity.LEFT)
             }
 
@@ -92,7 +99,7 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
 
             binding.btBackDetailes.setOnClickListener {
                 NavPoints.navigateTo(
-                    NavPoints.Home_fr(), supportFragmentManager, null, null,
+                    NavPoints.Home_fr(), supportFragmentManager
 
                     )
 
@@ -131,7 +138,7 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
         binding.edSearchCity.visibility = View.GONE
         binding.btSearchCity.visibility = View.GONE
         binding.btBackDetailes.visibility = View.VISIBLE
-        NavPoints.navigateTo(NavPoints.Detailed_fragment(arg = day), supportFragmentManager,intent, this)
+        NavPoints.navigateTo(NavPoints.Detailed_fragment(arg = day), supportFragmentManager)
     }
 
 

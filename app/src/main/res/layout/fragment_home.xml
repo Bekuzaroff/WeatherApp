@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_background"
     tools:context=".presentation.fragments.HomeFragment">
 
     <LinearLayout
@@ -63,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="100dp"
+                    android:layout_marginTop="120dp"
                     android:fontFamily="@font/ubuntu_bold"
                     android:text="28 C°"
                     android:textColor="@color/white"

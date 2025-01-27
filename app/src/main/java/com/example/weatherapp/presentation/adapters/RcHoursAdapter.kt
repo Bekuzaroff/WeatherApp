@@ -1,14 +1,20 @@
 package com.example.weatherapp.presentation.adapters
 
+import android.content.Context.MODE_PRIVATE
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.OneWeatherTimeBinding
 import com.example.weatherapp.domain.models.Hour
+import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.IN_F
+import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.SETTINGS_PREF
 
 
-class RcHoursAdapter(): RecyclerView.Adapter<RcHoursAdapter.RcHoursViewHolder>() {
+class RcHoursAdapter(
+    private val activity: FragmentActivity
+): RecyclerView.Adapter<RcHoursAdapter.RcHoursViewHolder>() {
 
     private var hour_list: List<Hour> = listOf()
 
@@ -28,9 +34,15 @@ class RcHoursAdapter(): RecyclerView.Adapter<RcHoursAdapter.RcHoursViewHolder>()
     }
 
     override fun onBindViewHolder(holder: RcHoursViewHolder, position: Int) {
+        val prefs = activity.getSharedPreferences(SETTINGS_PREF, MODE_PRIVATE)
+        val in_f = prefs.getBoolean(IN_F, false)
         holder.binding.apply {
             tvTime.text = hour_list[position].time.substring(10)
-            tvTemp.text = "${hour_list[position].temp_c} C°"
+            if (in_f){
+                tvTemp.text = "${hour_list[position].temp_f} F°"
+            }else{
+                tvTemp.text = "${hour_list[position].temp_c} C°"
+            }
 
             when(hour_list[position].condition.icon){
                 //night rain

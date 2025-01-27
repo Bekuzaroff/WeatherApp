@@ -24,6 +24,9 @@ import com.example.weatherapp.presentation.activities.MainActivity
 import com.example.weatherapp.presentation.adapters.RcDaysAdapter
 import com.example.weatherapp.presentation.adapters.RcHoursAdapter
 import com.example.weatherapp.presentation.di.App
+import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.IN_F
+import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.IN_MH
+import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.SETTINGS_PREF
 import com.example.weatherapp.presentation.viewmodel.ApiVMFactory
 import com.example.weatherapp.presentation.viewmodel.ApiViewModel
 import com.example.weatherapp.utils.ResourceState
@@ -69,8 +72,8 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater)
         location_client = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        hour_adapter = RcHoursAdapter()
-        day_adapter = RcDaysAdapter(requireActivity() as MainActivity)
+        hour_adapter = RcHoursAdapter(requireActivity())
+        day_adapter = RcDaysAdapter(events = requireActivity() as MainActivity, requireActivity())
 
 
         return binding.root
@@ -94,21 +97,33 @@ class HomeFragment : Fragment() {
 
         // SHARED PREFS FOR SAVING WEATHER MODEL AND THE SWITCH STATE
         val weather_prefs = requireActivity().getSharedPreferences(WEATHER_PREF_MODEL, MODE_PRIVATE)
+        val settings_pref = requireActivity().getSharedPreferences(SETTINGS_PREF, MODE_PRIVATE)
+
+        val in_f = settings_pref.getBoolean(IN_F, false)
 
         val str_model = weather_prefs.getString(WEATHER_MODEL, null)
-        if(str_model != null) {
-            val model = gson.fromJson(str_model, WeatherResponse::class.java)
+        var model: WeatherResponse ?= null
+
+        if (str_model != null){
+            model = gson.fromJson(str_model, WeatherResponse::class.java)
+        }
+
+        if(model != null) {
 
             hour_adapter.add_list(model.forecast.forecastday[0].hour)
             day_adapter.add_list(model.forecast.forecastday)
 
-
             binding.apply {
+
+                if (in_f){
+                    tvTemp.text = "${model.current.temp_f} F°"
+                }else{
+                    tvTemp.text = "${model.current.temp_c} C°"
+                }
+
                 tvCity.text = model.location.name
                 tvDate.text = model.location.localtime.substring(0, 10)
                 tvCondition.text = "${model.current.condition.text}"
-
-                tvTemp.text = "${model.current.temp_c} C°"
 
                 when(model.current.condition.icon){
                     //night rain
@@ -191,9 +206,8 @@ class HomeFragment : Fragment() {
                             val geoCoder = Geocoder(requireContext(), Locale.getDefault())
                             val address = geoCoder.getFromLocation(it.result.latitude,it.result.longitude,1)
                             if (address != null){
-                                val str_model = weather_prefs.getString(WEATHER_MODEL, null)
 
-                                if (str_model == null){
+                                if (model == null){
                                     var cityName = address[0].locality
                                     vm.getWeatherForecast(API_KEY, cityName)
                                 }
@@ -231,13 +245,17 @@ class HomeFragment : Fragment() {
 
                     // when the data state is loading we show in all textviews only "--"
                     is ResourceState.Loading -> {
-                        val str_model = weather_prefs.getString(WEATHER_MODEL, null)
                         binding.apply {
-                            if (str_model == null){
+                            if (model == null){
                                 tvCity.text = "--"
                                 tvDate.text = "--.--.--"
                                 tvCondition.text = "--"
-                                tvTemp.text = "-- C°"
+
+                                if (in_f){
+                                    tvTemp.text = "-- F°"
+                                }else{
+                                    tvTemp.text = "-- C°"
+                                }
                             }
 
 
@@ -268,7 +286,11 @@ class HomeFragment : Fragment() {
                                 tvDate.text = res.location.localtime.substring(0, 10)
                                 tvCondition.text = "${res.current.condition.text}"
 
-                                tvTemp.text = "${res.current.temp_c} C°"
+                                if (in_f){
+                                    tvTemp.text = "${res.current.temp_f} F°"
+                                }else{
+                                    tvTemp.text = "${res.current.temp_c} C°"
+                                }
 
 
 
@@ -338,14 +360,6 @@ class HomeFragment : Fragment() {
 
             }
         }
-
-
-
-
-
-
-
-
 
     }
 

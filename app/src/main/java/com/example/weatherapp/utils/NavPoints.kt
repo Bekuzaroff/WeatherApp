@@ -11,6 +11,7 @@ import com.example.weatherapp.presentation.fragments.AddCityFragment
 import com.example.weatherapp.presentation.fragments.DetailedFragment
 import com.example.weatherapp.presentation.fragments.HomeFragment
 import com.example.weatherapp.presentation.fragments.SavedCitiesFragment
+import com.example.weatherapp.presentation.fragments.SettingsFragment
 import java.io.Serializable
 
 sealed class NavPoints() {
@@ -19,10 +20,11 @@ sealed class NavPoints() {
     class Add_cities_fr(val arg: Serializable ?= null): NavPoints()
     class Saved_cities_fr(val arg: Serializable ?= null): NavPoints()
     class Detailed_fragment(val arg: Serializable ?= null): NavPoints()
+    class Settings_fragment(val arg: Serializable ?= null): NavPoints()
 
     companion object{
         fun navigateTo(navPoints: NavPoints, fr_manager: FragmentManager?,
-                       intent: Intent?, context: AppCompatActivity?){
+                       ){
             val bundle = Bundle()
 
             when(navPoints){
@@ -60,6 +62,12 @@ sealed class NavPoints() {
                     }
                     val fr = DetailedFragment()
                     fr.arguments = bundle
+                    fr_manager!!.beginTransaction().replace(R.id.fragmenthost,
+                        fr).commit()
+                }
+                is Settings_fragment -> {
+                    val fr = SettingsFragment()
+
                     fr_manager!!.beginTransaction().replace(R.id.fragmenthost,
                         fr).commit()
                 }
