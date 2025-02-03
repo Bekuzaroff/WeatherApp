@@ -51,28 +51,35 @@ class RcDaysAdapter(
             }
 
             when(day_list[position].day.condition.icon){
+
+                "//cdn.weatherapi.com/weather/64x64/day/302.png" -> {
+                    imgConditionDay.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
+                }
+                "//cdn.weatherapi.com/weather/64x64/day/371.png" -> {
+                    imgConditionDay.setImageResource(R.drawable.snow)
+                }
                 //night rain
                 "//cdn.weatherapi.com/weather/64x64/night/176.png" -> {
                     imgConditionDay.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
                 }
                 //day rain
-                "https://cdn.weatherapi.com/weather/64x64/day/296.png" -> {
+                "//cdn.weatherapi.com/weather/64x64/day/296.png" -> {
                     imgConditionDay.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
                 }
                 //cloudy
-                "https://cdn.weatherapi.com/weather/64x64/day/116.png" -> {
+                "//cdn.weatherapi.com/weather/64x64/day/116.png" -> {
                     imgConditionDay.setImageResource(R.drawable.cloud)
                 }
                 //night cloudy
-                "https://cdn.weatherapi.com/weather/64x64/night/116.png" -> {
+                "//cdn.weatherapi.com/weather/64x64/night/116.png" -> {
                     imgConditionDay.setImageResource(R.drawable.cloud_moon)
                 }
                 //day sunny
-                "https://cdn.weatherapi.com/weather/64x64/day/113.png" -> {
+                "//cdn.weatherapi.com/weather/64x64/day/113.png" -> {
                     imgConditionDay.setImageResource(R.drawable.reshot_icon_sun_s3a8p7lhkw)
                 }
                 //night clear
-                "https://cdn.weatherapi.com/weather/64x64/night/113.png" -> {
+                "//cdn.weatherapi.com/weather/64x64/night/113.png" -> {
                     imgConditionDay.setImageResource(R.drawable.reshot_icon_moon_crescent_sd4enbav8k)
                 }
                 //overcast day/night

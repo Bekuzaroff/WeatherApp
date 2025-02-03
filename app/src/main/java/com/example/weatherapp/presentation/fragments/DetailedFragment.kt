@@ -142,6 +142,12 @@ class DetailedFragment : Fragment() {
                 "//cdn.weatherapi.com/weather/64x64/night/119.png" -> {
                     imgConditionDetailed.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
                 }
+                "//cdn.weatherapi.com/weather/64x64/day/302.png" -> {
+                    imgConditionDetailed.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
+                }
+                "//cdn.weatherapi.com/weather/64x64/day/371.png" -> {
+                    imgConditionDetailed.setImageResource(R.drawable.snow)
+                }
             }
         }
 
