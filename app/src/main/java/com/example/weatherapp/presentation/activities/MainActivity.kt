@@ -1,6 +1,8 @@
 package com.example.weatherapp.presentation.activities
 
 import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Address
 import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Bundle
@@ -10,7 +12,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.ActivityMainBinding
 import com.example.weatherapp.domain.models.Forecastday
@@ -24,12 +29,16 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
 
+    private var address: MutableList<Address>? = null
     private var _binding: ActivityMainBinding ?= null
     private val binding: ActivityMainBinding
         get() = _binding!!
@@ -40,10 +49,11 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
     lateinit var vm_factory: ApiVMFactory
     lateinit var vm: ApiViewModel
 
-    var cityName: String = ""
-    var ed_city: String = ""
+    var cityName: MutableStateFlow<String> = MutableStateFlow("")
 
     var was_searched: Boolean = false
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,58 +71,71 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
 
         setContentView(binding.root)
 
+        lifecycleScope.launch {
+            cityName.collect {
+                vm.getWeatherForecast(API_KEY, it)
 
-        // GETTING LOCATION PERMISSIONS
-        val location_perm_request = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ){perms ->
-            when {
-                perms.getOrDefault(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    false) || perms.getOrDefault(
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                    ,false) -> {
-                    //WHEN LOCATION IS GRANTED
-                    //check if the gps is enabled so we get current user location
-                    if(isLocationEnabled()){
-                        val result = location_client.getCurrentLocation(
-                            Priority.PRIORITY_HIGH_ACCURACY,
-                            CancellationTokenSource().token
-                        )
+            }
+        }
 
-                        //when getting location is completed we get the city from location with Geocoder
-                        result.addOnCompleteListener {
-                            val geoCoder = Geocoder(this, Locale.getDefault())
-                            val address = geoCoder.getFromLocation(it.result.latitude,it.result.longitude,1)
-                            if (address != null){
-                                cityName = address[0].locality
-                                vm.getWeatherForecast(API_KEY, cityName)
+
+        val launcher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){perms->
+            val coarse = perms[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false
+            val fine = perms[Manifest.permission.ACCESS_FINE_LOCATION] ?: false
+
+            if (fine && coarse){
+                val result = location_client.getLastLocation(
+                )
+
+                //when getting location is completed we get the city from location with Geocoder
+                result.addOnCompleteListener {
+                    val geoCoder = Geocoder(this, Locale.getDefault())
+                    address = geoCoder.getFromLocation(it.result.latitude,it.result.longitude,1)
+                    if (address != null){
+                        cityName.value = address!![0].adminArea
+                        if (cityName.value == null){
+                            cityName.value = address!![0].locality
+                            if (cityName.value == null){
+                                cityName.value = address!![0].subAdminArea
                             }
-
                         }
-                    }else{
-                        cityName = "London"
-                        vm.getWeatherForecast(API_KEY, cityName)
-                        Toast.makeText(this, R.string.please_turn_the_location_on, Toast.LENGTH_LONG).show()
                     }
+
                 }
-                else -> {
-                    cityName = "London"
-                    vm.getWeatherForecast(API_KEY, cityName)
-                    Toast.makeText(this, R.string.no_location_access, Toast.LENGTH_LONG).show()
-                }
+            }else{
+                Toast.makeText(this, "you should enable your location in settings for normal app functionality"
+                ,Toast.LENGTH_LONG).show()
             }
 
         }
 
-        //array of needed permissions
-        val perms = arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION)
-        location_perm_request.launch(
-            perms
-        )
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED){
+                val result = location_client.getLastLocation(
+                )
 
+                //when getting location is completed we get the city from location with Geocoder
+                result.addOnCompleteListener {
+                    val geoCoder = Geocoder(this, Locale.getDefault())
+                    address = geoCoder.getFromLocation(it.result.latitude,it.result.longitude,1)
+                    if (address != null){
+                        cityName.value = address!![0].adminArea
+                        if (cityName.value == null){
+                            cityName.value = address!![0].locality
+                            if (cityName.value == null){
+                                cityName.value = address!![0].subAdminArea
+                            }
+                        }
+                    }
+
+                }
+
+        }else{
+            launcher.launch(
+                arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+            )
+        }
         // start fragment
         NavPoints.navigateTo(NavPoints.Home_fr(), supportFragmentManager)
 
@@ -172,12 +195,12 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
 
 
             btSearchCity.setOnClickListener {
-                was_searched = true
 
-                ed_city = edSearchCity.text.toString()
+
+                val ed_city = edSearchCity.text.toString()
                 if (ed_city.isNotEmpty()){
-                    vm.getWeatherForecast(API_KEY, ed_city)
-
+                    cityName.value = ed_city
+                    was_searched = true
                     btOpenDrawer.visibility = View.GONE
                     edSearchCity.visibility = View.GONE
                     btSearchCity.visibility = View.GONE
@@ -199,7 +222,17 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
                 edSearchCity.text.clear()
                 was_searched = false
 
-                vm.getWeatherForecast(API_KEY, cityName)
+                if (address != null) {
+                    cityName.value = address!![0].adminArea
+                    if (cityName.value == null){
+                        cityName.value = address!![0].locality
+                        if (cityName.value == null){
+                            cityName.value = address!![0].subAdminArea
+                        }
+                    }
+                }
+
+
                 NavPoints.navigateTo(NavPoints.Home_fr(), supportFragmentManager)
             }
 
@@ -209,11 +242,9 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
         }
 
 
-
-
-
-
     }
+
+
 
 
     override fun itemClick(day: Forecastday) {
@@ -225,20 +256,8 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
         NavPoints.navigateTo(NavPoints.Detailed_fragment(arg = day), supportFragmentManager)
     }
 
-
-    // IS GPS SERVICE IS ENABLED
-    private fun isLocationEnabled(): Boolean{
-        //getting location manager
-        val manager = getSystemService(LOCATION_SERVICE) as LocationManager
-
-        //checking if the gps is enabled
-        try{
-            return manager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
-        return false
+    companion object{
+        const val REQUEST_CODE_LOCATION = 111
     }
-
 
 }

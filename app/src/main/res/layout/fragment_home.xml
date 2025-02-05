@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_background"
     tools:context=".presentation.fragments.HomeFragment">
 
     <LinearLayout
@@ -23,29 +24,17 @@
 
 
                 <TextView
-                    android:id="@+id/tv_city"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/ubuntu"
-                    android:paddingStart="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="15dp"
-                    android:paddingBottom="5dp"
-                    android:text="London"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
-
-                <TextView
                     android:id="@+id/tv_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:layout_width="130dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/ubuntu"
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
                     android:paddingBottom="5dp"
                     android:text="13.01.2025"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
 
 
                 <ImageView
@@ -53,7 +42,7 @@
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:scaleType="centerCrop"
                     tools:src="@tools:sample/avatars" />
 
@@ -62,11 +51,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="120dp"
+                    android:layout_marginTop="100dp"
                     android:fontFamily="@font/ubuntu_bold"
                     android:text="28 C°"
                     android:textColor="@color/white"
-                    android:textSize="50sp" />
+                    android:textSize="35sp" />
             </FrameLayout>
 
             <TextView
@@ -82,7 +71,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="290dp"
+                android:layout_height="220dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
                 android:layout_marginBottom="5dp"
@@ -101,7 +90,7 @@
                 android:id="@+id/rc_days"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="15dp"
                 android:orientation="horizontal"
                 tools:listitem="@layout/one_day_weather" />

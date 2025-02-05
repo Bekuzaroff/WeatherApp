@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentDetailedBinding
 import com.example.weatherapp.domain.models.Forecastday
@@ -97,58 +98,7 @@ class DetailedFragment : Fragment() {
             chanceOfSnow.text = "${model?.day?.daily_chance_of_snow}%"
 
 
-            when(model?.day?.condition?.icon){
-                //night rain
-                "//cdn.weatherapi.com/weather/64x64/night/176.png" -> {
-                    imgConditionDetailed.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
-                }
-                //day rain
-                "//cdn.weatherapi.com/weather/64x64/day/296.png" -> {
-                    imgConditionDetailed.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
-                }
-                //cloudy
-                "//cdn.weatherapi.com/weather/64x64/day/116.png" -> {
-                    imgConditionDetailed.setImageResource(R.drawable.cloud)
-                }
-                //night cloudy
-                "//cdn.weatherapi.com/weather/64x64/night/116.png" -> {
-                    imgConditionDetailed.setImageResource(R.drawable.cloud_moon)
-                }
-                //day sunny
-                "//cdn.weatherapi.com/weather/64x64/day/113.png" -> {
-                    imgConditionDetailed.setImageResource(R.drawable.reshot_icon_sun_s3a8p7lhkw)
-                }
-                //night clear
-                "//cdn.weatherapi.com/weather/64x64/night/113.png" -> {
-                    imgConditionDetailed.setImageResource(R.drawable.reshot_icon_moon_crescent_sd4enbav8k)
-                }
-                //overcast day/night
-                "//cdn.weatherapi.com/weather/64x64/night/122.png" -> {
-                    imgConditionDetailed.setImageResource(R.drawable.cloud)
-                }
-                //day rain
-                "//cdn.weatherapi.com/weather/64x64/day/176.png" -> {
-                    imgConditionDetailed.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
-                }
-                //mist
-                "//cdn.weatherapi.com/weather/64x64/night/143.png" -> {
-                    imgConditionDetailed.setImageResource(R.drawable.cloud)
-                }
-                //rain
-                "//cdn.weatherapi.com/weather/64x64/day/119.png" -> {
-                    imgConditionDetailed.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
-                }
-                //rain night
-                "//cdn.weatherapi.com/weather/64x64/night/119.png" -> {
-                    imgConditionDetailed.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
-                }
-                "//cdn.weatherapi.com/weather/64x64/day/302.png" -> {
-                    imgConditionDetailed.setImageResource(R.drawable.reshot_icon_rain_bf97dvzpjh)
-                }
-                "//cdn.weatherapi.com/weather/64x64/day/371.png" -> {
-                    imgConditionDetailed.setImageResource(R.drawable.snow)
-                }
-            }
+            Glide.with(requireActivity()).load("https:${model?.day?.condition?.icon}").into(imgConditionDetailed)
         }
 
     }
