@@ -26,7 +26,6 @@ import com.example.weatherapp.presentation.viewmodel.ApiViewModel
 import com.example.weatherapp.utils.ResourceState
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
-import java.io.Serializable
 
 
 class HomeFragment : Fragment() {
