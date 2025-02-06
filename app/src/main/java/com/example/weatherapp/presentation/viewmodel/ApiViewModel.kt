@@ -1,5 +1,6 @@
 package com.example.weatherapp.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.domain.models.WeatherResponse
@@ -8,6 +9,8 @@ import com.example.weatherapp.utils.ResourceState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.net.SocketException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class ApiViewModel @Inject constructor(
@@ -34,8 +37,12 @@ class ApiViewModel @Inject constructor(
             }else{
                 _weather_flow.emit(ResourceState.Error(m = response.message()))
             }
-        }catch (e: HttpException){
-            _weather_flow.emit(ResourceState.Error(m = e.message()))
+        }catch (e: Exception){
+            when(e){
+                is UnknownHostException -> {
+                    _weather_flow.emit(ResourceState.Error(m = "you don't have internet connection"))
+                }
+            }
         }
 
     }

@@ -1,6 +1,7 @@
 package com.example.weatherapp.presentation.fragments
 
 import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,11 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentSettingsBinding
+import com.example.weatherapp.presentation.activities.MainActivity
 
 class SettingsFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingsBinding
 
+    private var settings_prefs: SharedPreferences ?= null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,27 +32,27 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val settings_prefs = requireActivity().getSharedPreferences(SETTINGS_PREF, MODE_PRIVATE)
+        settings_prefs = (requireActivity() as MainActivity).settings_prefs
 
 
 
         binding.apply {
-            switchInF.isChecked = settings_prefs.getBoolean(IN_F, false)
-            switchMh.isChecked = settings_prefs.getBoolean(IN_MH, false)
+            switchInF.isChecked = settings_prefs?.getBoolean(IN_F, false) ?: false
+            switchMh.isChecked = settings_prefs?.getBoolean(IN_MH, false) ?: false
             switchInF.setOnClickListener {
 
                 if (switchInF.isChecked){
-                    settings_prefs.edit().putBoolean(IN_F, true).commit()
+                    settings_prefs!!.edit().putBoolean(IN_F, true).commit()
                 }else{
-                    settings_prefs.edit().putBoolean(IN_F, false).commit()
+                    settings_prefs!!.edit().putBoolean(IN_F, false).commit()
                 }
             }
 
             switchMh.setOnClickListener {
                 if (switchMh.isChecked){
-                    settings_prefs.edit().putBoolean(IN_MH, true).commit()
+                    settings_prefs!!.edit().putBoolean(IN_MH, true).commit()
                 }else{
-                    settings_prefs.edit().putBoolean(IN_MH, false).commit()
+                    settings_prefs!!.edit().putBoolean(IN_MH, false).commit()
                 }
             }
         }
