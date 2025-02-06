@@ -1,6 +1,5 @@
 package com.example.weatherapp.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.domain.models.WeatherResponse
@@ -8,8 +7,6 @@ import com.example.weatherapp.domain.usecases.ForecastUseCase
 import com.example.weatherapp.utils.ResourceState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.net.SocketException
 import java.net.UnknownHostException
 import javax.inject.Inject
 

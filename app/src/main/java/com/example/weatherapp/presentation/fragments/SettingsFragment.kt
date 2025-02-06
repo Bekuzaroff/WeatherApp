@@ -1,13 +1,11 @@
 package com.example.weatherapp.presentation.fragments
 
-import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentSettingsBinding
 import com.example.weatherapp.presentation.activities.MainActivity
 

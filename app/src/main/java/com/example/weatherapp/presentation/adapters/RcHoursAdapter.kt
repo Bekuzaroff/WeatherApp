@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.weatherapp.R
 import com.example.weatherapp.databinding.OneWeatherTimeBinding
 import com.example.weatherapp.domain.models.Hour
 import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.IN_F
