@@ -1,7 +1,6 @@
 package com.example.weatherapp.presentation.di
 
 import android.app.Application
-import javax.inject.Inject
 
 class App(): Application() {
 

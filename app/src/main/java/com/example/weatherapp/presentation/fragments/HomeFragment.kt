@@ -15,10 +15,9 @@ import com.bumptech.glide.Glide
 import com.example.weatherapp.databinding.FragmentHomeBinding
 import com.example.weatherapp.domain.models.WeatherResponse
 import com.example.weatherapp.presentation.activities.MainActivity
+import com.example.weatherapp.presentation.activities.MainActivity.Companion.CACHE_PREFS
 import com.example.weatherapp.presentation.adapters.RcDaysAdapter
 import com.example.weatherapp.presentation.adapters.RcHoursAdapter
-import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.IN_F
-import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.SETTINGS_PREF
 import com.example.weatherapp.presentation.viewmodel.ApiViewModel
 import com.example.weatherapp.utils.ResourceState
 import com.google.gson.Gson
@@ -38,7 +37,6 @@ class HomeFragment : Fragment() {
     private var day_adapter: RcDaysAdapter ?= null
 
     var settings_prefs: SharedPreferences ?= null
-    var in_f: Boolean ?= null
 
     private val gson = Gson()
 
@@ -46,7 +44,7 @@ class HomeFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         //view model init
-        vm = (requireActivity() as MainActivity).vm
+        vm = (requireActivity() as MainActivity).apiViewModel
 
     }
 
@@ -68,10 +66,7 @@ class HomeFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         //prefs init
-        settings_prefs = requireActivity().getSharedPreferences(SETTINGS_PREF, MODE_PRIVATE)
-        settings_prefs?.let {
-            in_f = it.getBoolean(IN_F, false)
-        }
+        settings_prefs = requireActivity().getSharedPreferences(CACHE_PREFS, MODE_PRIVATE)
     }
 
 
@@ -113,23 +108,14 @@ class HomeFragment : Fragment() {
 
                                 tvDate.text = data.location.localtime.substring(0, 10)
                                 tvCondition.text = "${data.current.condition.text}"
+                                tvTemp.text = "${data.current.temp_c} C°"
 
-                                if (in_f == true){
-                                    tvTemp.text = "${data.current.temp_f} F°"
-                                }else{
-                                    tvTemp.text = "${data.current.temp_c} C°"
-                                }
 
                                 Glide.with(requireContext()).load("https:${data.current.condition.icon}").into(imgCondition)
                             }else{
                                 tvDate.text = "--.--.--"
                                 tvCondition.text = "--"
-
-                                if (in_f == true){
-                                    tvTemp.text = "-- F°"
-                                }else{
-                                    tvTemp.text = "-- C°"
-                                }
+                                tvTemp.text = "-- C°"
                             }
                         }
                     }
@@ -144,12 +130,7 @@ class HomeFragment : Fragment() {
 
                                 tvDate.text = res.location.localtime.substring(0, 10)
                                 tvCondition.text = "${res.current.condition.text}"
-
-                                if (in_f == true){
-                                    tvTemp.text = "${res.current.temp_f} F°"
-                                }else{
-                                    tvTemp.text = "${res.current.temp_c} C°"
-                                }
+                                tvTemp.text = "${res.current.temp_c} C°"
 
                                 Glide.with(requireContext()).load("https:${res.current.condition.icon}").into(imgCondition)
 
@@ -178,23 +159,14 @@ class HomeFragment : Fragment() {
 
                                 tvDate.text = data!!.location.localtime.substring(0, 10)
                                 tvCondition.text = "${data!!.current.condition.text}"
-
-                                if (in_f == true){
-                                    tvTemp.text = "${data!!.current.temp_f} F°"
-                                }else{
-                                    tvTemp.text = "${data!!.current.temp_c} C°"
-                                }
+                                tvTemp.text = "${data!!.current.temp_c} C°"
 
                                 Glide.with(requireContext()).load("https:${data!!.current.condition.icon}").into(imgCondition)
                             }else{
                                 tvDate.text = "--.--.--"
                                 tvCondition.text = "--"
+                                tvTemp.text = "-- C°"
 
-                                if (in_f == true){
-                                    tvTemp.text = "-- F°"
-                                }else{
-                                    tvTemp.text = "-- C°"
-                                }
                             }
                         }
                     }

@@ -16,15 +16,15 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.databinding.ActivityMainBinding
 import com.example.weatherapp.domain.models.Forecastday
 import com.example.weatherapp.presentation.adapters.RcDaysAdapter
 import com.example.weatherapp.presentation.di.App
-import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.SETTINGS_PREF
 import com.example.weatherapp.presentation.viewmodel.ApiVMFactory
 import com.example.weatherapp.presentation.viewmodel.ApiViewModel
+import com.example.weatherapp.presentation.viewmodel.CitiesVMFactory
+import com.example.weatherapp.presentation.viewmodel.CitiesViewModel
 import com.example.weatherapp.utils.NavPoints
 import com.example.weatherapp.utils.consts.API_KEY
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -50,8 +50,17 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
     var settings_prefs: SharedPreferences ?= null
 
     @Inject
-    lateinit var vm_factory: ApiVMFactory
-    lateinit var vm: ApiViewModel
+    lateinit var apiVMFactory: ApiVMFactory
+    val apiViewModel by lazy {
+        apiVMFactory.create(ApiViewModel::class.java)
+    }
+
+    @Inject
+    lateinit var citiesVMFactory: CitiesVMFactory
+
+    val citiesViewModel by lazy {
+        citiesVMFactory.create(CitiesViewModel::class.java)
+    }
 
     var cityName: MutableStateFlow<String> = MutableStateFlow("")
 
@@ -65,18 +74,15 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
 
         (application as App).component.inject(this)
 
-        //VIEWMODEL INIT
-        vm = ViewModelProvider(this, vm_factory).get(ApiViewModel::class)
-
         location_client = LocationServices.getFusedLocationProviderClient(this)
 
-        settings_prefs = getSharedPreferences(SETTINGS_PREF, MODE_PRIVATE)
+        settings_prefs = getSharedPreferences(CACHE_PREFS, MODE_PRIVATE)
         setContentView(binding.root)
 
         //COLLECTING THE CITY NAME AND GET WEATHER FOR THIS CITY
         lifecycleScope.launch {
             cityName.collect {
-                vm.getWeatherForecast(API_KEY, it)
+                apiViewModel.getWeatherForecast(API_KEY, it)
 
             }
         }
@@ -124,7 +130,7 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
             == PackageManager.PERMISSION_GRANTED){
                 if (isOnline()) {
-                    val result = location_client.lastLocation
+                    val result = location_client.getLastLocation()
 
                     //when getting location is completed we get the city from location with Geocoder
                     result.addOnCompleteListener {
@@ -189,13 +195,6 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
                 )
                 drawer.closeDrawer(Gravity.LEFT)
             }
-            tvSettings.setOnClickListener {
-                NavPoints.navigateTo(
-                    NavPoints.Settings_fragment(), supportFragmentManager,
-
-                    )
-                drawer.closeDrawer(Gravity.LEFT)
-            }
 
 
             btOpenDrawer.setOnClickListener {
@@ -204,10 +203,7 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
 
             btBackDetailes.setOnClickListener {
 
-                NavPoints.navigateTo(
-                    NavPoints.Home_fr(), supportFragmentManager
-
-                    )
+                NavPoints.navigateTo(NavPoints.Home_fr(), supportFragmentManager)
 
                 //THE LOGIC FOR GETTING BACK FROM ANOTHER CITY WEATHER TO USER'S CITY WEATHER, WHEN
                 //USER GOES BACK FROM DETAILED FRAGMENT
@@ -314,6 +310,10 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
         binding.btBackDetailes.visibility = View.VISIBLE
 
         NavPoints.navigateTo(NavPoints.Detailed_fragment(arg = day), supportFragmentManager)
+    }
+
+    companion object{
+        const val CACHE_PREFS = "CACHE_PREFS"
     }
 
 

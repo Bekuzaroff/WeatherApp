@@ -14,8 +14,6 @@ import com.example.weatherapp.databinding.FragmentDetailedBinding
 import com.example.weatherapp.domain.models.Forecastday
 import com.example.weatherapp.presentation.activities.MainActivity
 import com.example.weatherapp.presentation.adapters.RcHoursAdapter
-import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.IN_F
-import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.IN_MH
 
 
 class DetailedFragment : Fragment() {
@@ -29,11 +27,6 @@ class DetailedFragment : Fragment() {
     private var model: Forecastday ?= null
 
     private lateinit var adapter: RcHoursAdapter
-
-    private var settings_prefs: SharedPreferences ?= null
-    //preferences from settings fragment for units
-    private var in_f: Boolean ?= null
-    private var in_mh: Boolean ?= null
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,14 +55,6 @@ class DetailedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //settings prefs init
-        settings_prefs = (requireActivity() as MainActivity).settings_prefs
-
-        if (settings_prefs != null){
-            in_f = settings_prefs!!.getBoolean(IN_F, false)
-            in_mh = settings_prefs!!.getBoolean(IN_MH, false)
-        }
-
         //TODO UI LOGIC
         binding.apply {
 
@@ -81,22 +66,10 @@ class DetailedFragment : Fragment() {
                 adapter.add_list(model!!.hour)
             }
 
-            //put current unit for temperature
-            in_f?.let {
-                if (it){
-                    tvTempDetailed.text = "${model?.day?.maxtemp_f} F°"
-                }else{
-                    tvTempDetailed.text = "${model?.day?.maxtemp_c} C°"
-                }
-            }
-            //put current unit for wind speed
-            in_mh?.let {
-                if (it){
-                    wind.text = "${model?.day?.maxwind_mph} m/h"
-                }else{
-                    wind.text = "${model?.day?.maxwind_kph} km/h"
-                }
-            }
+            tvTempDetailed.text = "${model?.day?.maxtemp_c} C°"
+            wind.text = "${model?.day?.maxwind_kph} km/h"
+
+
 
             //put all data from args into ui
             tvDateDetailed.text = "${model?.date}"

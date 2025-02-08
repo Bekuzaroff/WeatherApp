@@ -1,7 +1,7 @@
 package com.example.weatherapp.domain.usecases
 
 import com.example.weatherapp.domain.models.WeatherResponse
-import com.example.weatherapp.domain.repoimpls.ForecastRepository
+import com.example.weatherapp.domain.repos.ForecastRepository
 import retrofit2.Response
 import javax.inject.Inject
 

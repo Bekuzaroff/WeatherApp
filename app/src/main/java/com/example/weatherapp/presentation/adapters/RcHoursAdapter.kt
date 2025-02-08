@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.weatherapp.databinding.OneWeatherTimeBinding
 import com.example.weatherapp.domain.models.Hour
-import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.IN_F
-import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.SETTINGS_PREF
 
 
 class RcHoursAdapter(
@@ -34,17 +32,9 @@ class RcHoursAdapter(
     }
 
     override fun onBindViewHolder(holder: RcHoursViewHolder, position: Int) {
-        val prefs = activity.getSharedPreferences(SETTINGS_PREF, MODE_PRIVATE)
-        val in_f = prefs.getBoolean(IN_F, false)
         holder.binding.apply {
             tvTime.text = hour_list[position].time.substring(10)
-            if (in_f) {
-                tvTemp.text = "${hour_list[position].temp_f} F°"
-            } else {
-                tvTemp.text = "${hour_list[position].temp_c} C°"
-            }
-
-
+            tvTemp.text = "${hour_list[position].temp_c} C°"
 
             Glide.with(holder.itemView).load("https:${hour_list[position].condition.icon}").into(imgConditionHour)
         }

@@ -1,4 +1,4 @@
-package com.example.weatherapp.domain.repoimpls
+package com.example.weatherapp.domain.repos
 
 import com.example.weatherapp.domain.models.WeatherResponse
 import retrofit2.Response

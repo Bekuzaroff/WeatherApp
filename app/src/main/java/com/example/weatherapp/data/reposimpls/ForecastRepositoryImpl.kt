@@ -1,8 +1,8 @@
-package com.example.weatherapp.data.repositories
+package com.example.weatherapp.data.reposimpls
 
 import com.example.weatherapp.data.remotedata.WeatherService
 import com.example.weatherapp.domain.models.WeatherResponse
-import com.example.weatherapp.domain.repoimpls.ForecastRepository
+import com.example.weatherapp.domain.repos.ForecastRepository
 
 import retrofit2.Response
 import javax.inject.Inject

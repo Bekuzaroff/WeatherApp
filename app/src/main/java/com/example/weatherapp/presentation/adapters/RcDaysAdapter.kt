@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.weatherapp.databinding.OneDayWeatherBinding
 import com.example.weatherapp.domain.models.Forecastday
-import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.IN_F
-import com.example.weatherapp.presentation.fragments.SettingsFragment.Companion.SETTINGS_PREF
+import com.example.weatherapp.presentation.activities.MainActivity.Companion.CACHE_PREFS
 
 class RcDaysAdapter(
     private val events: ClickEvents,
@@ -34,18 +33,10 @@ class RcDaysAdapter(
     }
 
     override fun onBindViewHolder(holder: RcDaysViewHolder, position: Int) {
-        val prefs = activity.getSharedPreferences(SETTINGS_PREF, MODE_PRIVATE)
-        val in_f = prefs.getBoolean(IN_F, false)
-
 
         holder.binding.apply {
             tvDateDay.text = "${day_list[position].date.substring(0, 10)}"
-
-            if (in_f){
-                tvTempDay.text = "${day_list[position].day.avgtemp_f} F°"
-            }else{
-                tvTempDay.text = "${day_list[position].day.avgtemp_c} C°"
-            }
+            tvTempDay.text = "${day_list[position].day.avgtemp_c} C°"
 
             Glide.with(holder.itemView).load("https:${day_list[position].day.condition.icon}").into(imgConditionDay)
 
