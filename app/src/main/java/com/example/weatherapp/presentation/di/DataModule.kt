@@ -16,6 +16,7 @@ import javax.inject.Singleton
 @Module
 class DataModule {
 
+    //api
     @Named("WeatherRetrofit")
     @Provides
     fun provideWeatherRetrofit(): Retrofit {
@@ -44,10 +45,7 @@ class DataModule {
         return citiesRetrofit.create(CitiesService::class.java)
     }
 
-
-
-
-
+    //db
     @Provides
     fun provideDb(context: Context): Citydb = Citydb.getDb(context)
 

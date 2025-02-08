@@ -50,11 +50,11 @@ class CitiesViewModel @Inject constructor(
     val citiesFlow: MutableStateFlow<ResourceState<Cities>>
         get() = _citiesFlow
 
-    fun searchCities(query: String) = viewModelScope.launch {
+    fun searchCities(query: String, apiKey: String) = viewModelScope.launch {
         try {
             _citiesFlow.emit(ResourceState.Loading())
 
-            val response = searchCitiesUseCase(query)
+            val response = searchCitiesUseCase(query, apiKey)
 
             if (response.isSuccessful){
                 _citiesFlow.emit(ResourceState.Success(resource = response.body()))

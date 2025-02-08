@@ -16,5 +16,5 @@ interface CityRepo {
     suspend fun searchSavedCities(query: String): List<CitiesItem>
 
     //api
-    suspend fun searchCities(query: String): Response<Cities>
+    suspend fun searchCities(query: String, apiKey: String): Response<Cities>
 }

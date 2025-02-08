@@ -20,6 +20,6 @@ class CityRepoImpl @Inject constructor(val dao: CityDao,
 
 
     //api methods
-    override suspend fun searchCities(query: String): Response<Cities> = citiesService.searchCity(query)
+    override suspend fun searchCities(query: String, apiKey: String): Response<Cities> = citiesService.searchCity(query, apiKey)
 
 }

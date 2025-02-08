@@ -8,7 +8,7 @@ import javax.inject.Inject
 class SearchCitiesUseCase @Inject constructor(
     val repo: CityRepo
 ) {
-    suspend operator fun invoke(query: String): Response<Cities>{
-        return repo.searchCities(query)
+    suspend operator fun invoke(query: String, apiKey: String): Response<Cities>{
+        return repo.searchCities(query, apiKey)
     }
 }
