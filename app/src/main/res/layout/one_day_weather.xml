@@ -27,12 +27,12 @@
             android:paddingEnd="15sp"
             android:text="14.01.2025"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/img_condition_day"
-            android:layout_width="30sp"
-            android:layout_height="30sp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_gravity="center"
             android:paddingTop="5sp"
             tools:srcCompat="@tools:sample/avatars" />
@@ -48,7 +48,7 @@
             android:paddingEnd="15sp"
             android:text="-3.6 C°"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_condition_day"
@@ -62,7 +62,7 @@
             android:paddingBottom="40sp"
             android:text="Partly Cloudy"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
 
     </LinearLayout>
