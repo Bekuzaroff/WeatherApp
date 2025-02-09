@@ -10,6 +10,7 @@ import com.example.weatherapp.domain.usecases.GetAllCitiesUseCase
 import com.example.weatherapp.domain.usecases.RemoveCityUseCase
 import com.example.weatherapp.domain.usecases.SearchCitiesUseCase
 import com.example.weatherapp.domain.usecases.SearchSavedCitiesUseCase
+import com.example.weatherapp.utils.CitiesResourceState
 import com.example.weatherapp.utils.ResourceState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -46,20 +47,20 @@ class CitiesViewModel @Inject constructor(
 
 
     //api operations
-    private val _citiesFlow: MutableStateFlow<ResourceState<Cities>> = MutableStateFlow(ResourceState.Loading())
-    val citiesFlow: MutableStateFlow<ResourceState<Cities>>
+    private val _citiesFlow: MutableStateFlow<CitiesResourceState<Cities>> = MutableStateFlow(CitiesResourceState.Loading())
+    val citiesFlow: MutableStateFlow<CitiesResourceState<Cities>>
         get() = _citiesFlow
 
     fun searchCities(query: String, apiKey: String) = viewModelScope.launch {
         try {
-            _citiesFlow.emit(ResourceState.Loading())
+            _citiesFlow.emit(CitiesResourceState.Loading())
 
             val response = searchCitiesUseCase(query, apiKey)
 
             if (response.isSuccessful){
-                _citiesFlow.emit(ResourceState.Success(resource = response.body()))
+                _citiesFlow.emit(CitiesResourceState.Success(resource = response.body()))
             }else{
-                _citiesFlow.emit(ResourceState.Error(m = response.message()))
+                _citiesFlow.emit(CitiesResourceState.Error(m = response.message()))
             }
         }catch (e: Exception){
             Log.d("e in cities vm", e.message.toString())

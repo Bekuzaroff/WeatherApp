@@ -27,7 +27,9 @@ import com.example.weatherapp.presentation.viewmodel.CitiesVMFactory
 import com.example.weatherapp.presentation.viewmodel.CitiesViewModel
 import com.example.weatherapp.utils.NavPoints
 import com.example.weatherapp.utils.consts.API_KEY
+import com.example.weatherapp.utils.consts.API_KEY_CITY
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -65,6 +67,7 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
     var cityName: MutableStateFlow<String> = MutableStateFlow("")
 
     private var was_searched: Boolean = false
+    private var which_fragment: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,29 +98,39 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
             val fine = perms[Manifest.permission.ACCESS_FINE_LOCATION] ?: false
 
             if (fine && coarse){
-                val result = location_client.getLastLocation()
 
-                //when getting location is completed we get the city from location with Geocoder
-                result.addOnCompleteListener {
-                    val geoCoder = Geocoder(this, Locale.getDefault())
-                    address = geoCoder.getFromLocation(it.result.latitude,it.result.longitude,1)
+                if (isOnline()) {
+                    val result = location_client.getCurrentLocation(
+                        LocationRequest.PRIORITY_HIGH_ACCURACY,
+                        null
+                    )
 
-                    if (address != null){
-                        cityName.value = address!![0].adminArea
 
-                        if (cityName.value == null){
-                            cityName.value = address!![0].locality
+                    //when getting location is completed we get the city from location with Geocoder
+                    result.addOnCompleteListener {
+                        val geoCoder = Geocoder(this, Locale.getDefault())
+                        address =
+                            geoCoder.getFromLocation(it.result.latitude, it.result.longitude, 1)
 
-                            if (cityName.value == null){
-                                cityName.value = address!![0].subAdminArea
+                        if (address != null) {
+                            cityName.value = address!![0].adminArea
 
-                                if (cityName.value == null){
-                                    cityName.value = "London"
+                            if (cityName.value == null) {
+                                cityName.value = address!![0].locality
+
+                                if (cityName.value == null) {
+                                    cityName.value = address!![0].subAdminArea
+
+                                    if (cityName.value == null) {
+                                        cityName.value = "London"
+                                    }
                                 }
                             }
                         }
-                    }
 
+                    }
+                }else{
+                    cityName.value = "London"
                 }
             }else{
                 Toast.makeText(this, "you should enable your location in settings for normal app functionality"
@@ -130,7 +143,10 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
             == PackageManager.PERMISSION_GRANTED){
                 if (isOnline()) {
-                    val result = location_client.getLastLocation()
+                    val result = location_client.getCurrentLocation(
+                        LocationRequest.PRIORITY_HIGH_ACCURACY,
+                        null
+                    )
 
                     //when getting location is completed we get the city from location with Geocoder
                     result.addOnCompleteListener {
@@ -179,6 +195,7 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
                 NavPoints.navigateTo(NavPoints.Home_fr(), supportFragmentManager,
                     )
                 drawer.closeDrawer(Gravity.LEFT)
+                which_fragment = 1
             }
             tvAddcities.setOnClickListener {
                 NavPoints.navigateTo(
@@ -186,6 +203,7 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
 
                 )
                 drawer.closeDrawer(Gravity.LEFT)
+                which_fragment = 2
             }
 
             tvSavedcities.setOnClickListener {
@@ -194,6 +212,7 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
 
                 )
                 drawer.closeDrawer(Gravity.LEFT)
+                which_fragment = 3
             }
 
 
@@ -226,14 +245,18 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
                 val ed_city = edSearchCity.text.toString()
                 if (ed_city.isNotEmpty()){
                     //WE CHANGE THE OBSERVABLE VALUE OF CITY NAME AND GET THE RESPONSE FOR THIS CITYNAME
-
-                    cityName.value = ed_city
                     was_searched = true
 
                     btOpenDrawer.visibility = View.GONE
                     edSearchCity.visibility = View.GONE
                     btSearchCity.visibility = View.GONE
                     btBackFromSearch.visibility = View.VISIBLE
+                    if (which_fragment == 1){
+                        cityName.value = ed_city
+                    }else if (which_fragment == 2){
+                        citiesViewModel.searchCities(ed_city, API_KEY_CITY)
+                    }else if (which_fragment == 3){
+                    }
 
                 }else{
                     Toast.makeText(this@MainActivity, "sorry but you did not input the city name",
@@ -251,22 +274,28 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
 
                 edSearchCity.text.clear()
 
-                was_searched = false
+                if (which_fragment == 1){
+                    was_searched = false
 
-                //WE GET BACK THE RESPONSE FOR CURRENT USER CITY
-                if (address != null) {
-                    cityName.value = address!![0].adminArea
-
-                    if (cityName.value == null){
-                        cityName.value = address!![0].locality
+                    //WE GET BACK THE RESPONSE FOR CURRENT USER CITY
+                    if (address != null) {
+                        cityName.value = address!![0].adminArea
 
                         if (cityName.value == null){
-                            cityName.value = address!![0].subAdminArea
+                            cityName.value = address!![0].locality
+
+                            if (cityName.value == null){
+                                cityName.value = address!![0].subAdminArea
+                            }
                         }
                     }
-                }
 
-                NavPoints.navigateTo(NavPoints.Home_fr(), supportFragmentManager)
+                    NavPoints.navigateTo(NavPoints.Home_fr(), supportFragmentManager)
+                }else if (which_fragment == 2){
+                    was_searched = false
+                }else if (which_fragment == 3){
+                    was_searched = false
+                }
             }
 
 

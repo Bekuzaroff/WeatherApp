@@ -1,60 +1,74 @@
 package com.example.weatherapp.presentation.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
+import com.example.weatherapp.databinding.FragmentAddCityBinding
+import com.example.weatherapp.domain.models.CitiesItem
+import com.example.weatherapp.presentation.activities.MainActivity
+import com.example.weatherapp.presentation.adapters.CityItemAdapter
+import com.example.weatherapp.presentation.viewmodel.CitiesViewModel
+import com.example.weatherapp.utils.CitiesResourceState
+import com.example.weatherapp.utils.ResourceState
+import com.example.weatherapp.utils.consts.API_KEY_CITY
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class AddCityFragment : Fragment(), CityItemAdapter.CityClicks {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AddCityFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class AddCityFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding: FragmentAddCityBinding
+    private lateinit var citiesviewModel: CitiesViewModel
+
+    private lateinit var adapter: CityItemAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
+        citiesviewModel = (requireActivity() as MainActivity).citiesViewModel
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_city, container, false)
+        binding = FragmentAddCityBinding.inflate(inflater)
+        adapter = CityItemAdapter(this)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddCityFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AddCityFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.apply {
+            rcCityApi.adapter = adapter
+            rcCityApi.layoutManager = LinearLayoutManager(requireContext())
+        }
+        lifecycleScope.launch {
+            citiesviewModel.citiesFlow.collect{state->
+                when(state){
+                    is CitiesResourceState.Loading -> {
+
+                    }
+                    is CitiesResourceState.Success -> {
+                        adapter.differ.submitList(state.data)
+                    }
+                    is CitiesResourceState.Error -> {
+                        Toast.makeText(requireContext(), state.m, Toast.LENGTH_LONG).show()
+                    }
+
                 }
             }
+        }
+    }
+
+    override fun addCity(citiesItem: CitiesItem) {
+        citiesviewModel.addCity(citiesItem)
+        Toast.makeText(requireContext(), "added successfully", Toast.LENGTH_LONG).show()
     }
 }
