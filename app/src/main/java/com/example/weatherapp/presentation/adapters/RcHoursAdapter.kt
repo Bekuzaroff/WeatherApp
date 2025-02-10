@@ -11,7 +11,6 @@ import com.example.weatherapp.domain.models.Hour
 
 
 class RcHoursAdapter(
-    private val activity: FragmentActivity
 ): RecyclerView.Adapter<RcHoursAdapter.RcHoursViewHolder>() {
 
     private var hour_list: List<Hour> = listOf()

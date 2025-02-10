@@ -48,6 +48,8 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.16.0")
 
     implementation ("com.google.dagger:dagger:2.20")
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     kapt("com.google.dagger:dagger-compiler:2.20")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")

@@ -1,7 +1,7 @@
 package com.example.weatherapp.presentation.fragments
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.databinding.FragmentSavedCitiesBinding
 import com.example.weatherapp.domain.models.CitiesItem
 import com.example.weatherapp.presentation.activities.MainActivity
-import com.example.weatherapp.presentation.adapters.CityItemAdapter
+import com.example.weatherapp.presentation.activities.MainActivity2
 import com.example.weatherapp.presentation.adapters.CitySavedAdapter
 import com.example.weatherapp.presentation.viewmodel.CitiesViewModel
 import kotlinx.coroutines.launch
@@ -63,6 +63,15 @@ class SavedCitiesFragment : Fragment(), CitySavedAdapter.CityClicksSaved {
     override fun deleteCity(citiesItem: CitiesItem) {
         citiesviewModel.removeCity(citiesItem)
         citiesviewModel.getAllCities()
-        Toast.makeText(requireContext(), "added successfully", Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), "removed successfully", Toast.LENGTH_LONG).show()
+    }
+
+    override fun itemClick(citiesItem: CitiesItem) {
+        val intent = Intent(requireContext(), MainActivity2::class.java)
+        intent.putExtra(SAVED_CITY, citiesItem)
+        requireActivity().startActivity(intent)
+    }
+    companion object{
+        const val SAVED_CITY = "saved_city"
     }
 }

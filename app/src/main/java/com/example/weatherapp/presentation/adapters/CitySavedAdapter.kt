@@ -40,10 +40,14 @@ class CitySavedAdapter(val cityClicks: CityClicksSaved): RecyclerView.Adapter<Ci
                 // Передаем currentItem в deleteCity
                 cityClicks.deleteCity(currentItem)
             }
+            holder.itemView.setOnClickListener {
+                cityClicks.itemClick(currentItem)
+            }
         }
     }
 
     interface CityClicksSaved{
         fun deleteCity(citiesItem: CitiesItem)
+        fun itemClick(citiesItem: CitiesItem)
     }
 }

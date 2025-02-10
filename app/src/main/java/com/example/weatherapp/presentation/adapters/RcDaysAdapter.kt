@@ -12,7 +12,6 @@ import com.example.weatherapp.presentation.activities.MainActivity.Companion.CAC
 
 class RcDaysAdapter(
     private val events: ClickEvents,
-    private val activity: FragmentActivity
 ) : RecyclerView.Adapter<RcDaysAdapter.RcDaysViewHolder>() {
 
     private var day_list: List<Forecastday> = listOf()

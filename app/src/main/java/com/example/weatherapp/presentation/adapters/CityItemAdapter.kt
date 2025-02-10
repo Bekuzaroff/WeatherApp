@@ -33,15 +33,20 @@ class CityItemAdapter(val cityClicks: CityClicks): RecyclerView.Adapter<CityItem
     }
 
     override fun onBindViewHolder(holder: CityItemHolder, position: Int) {
+        val currentItem = differ.currentList[position]
         holder.binding.apply {
-            tvCityName.text = differ.currentList[position].name
+            tvCityName.text = currentItem.name
             btAddCity.setOnClickListener {
-                cityClicks.addCity(differ.currentList[position])
+                cityClicks.addCity(currentItem)
+            }
+            holder.itemView.setOnClickListener {
+                cityClicks.itemClick(currentItem)
             }
         }
     }
 
     interface CityClicks{
         fun addCity(citiesItem: CitiesItem)
+        fun itemClick(citiesItem: CitiesItem)
     }
 }

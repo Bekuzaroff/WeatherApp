@@ -11,14 +11,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.weatherapp.databinding.FragmentDetailedBinding
+import com.example.weatherapp.databinding.FragmentSavedCityWeatherDetailBinding
 import com.example.weatherapp.domain.models.Forecastday
 import com.example.weatherapp.presentation.activities.MainActivity
 import com.example.weatherapp.presentation.adapters.RcHoursAdapter
+import com.example.weatherapp.utils.NavPoints
 
 
-class DetailedFragment : Fragment() {
+class SavedCityWeatherDetailFragment : Fragment() {
 
-    private lateinit var binding: FragmentDetailedBinding
+    private lateinit var binding: FragmentSavedCityWeatherDetailBinding
 
     //args from the home fragment
     private var args: Bundle ?= null
@@ -28,7 +30,6 @@ class DetailedFragment : Fragment() {
 
     private lateinit var adapter: RcHoursAdapter
 
-    @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,7 +47,7 @@ class DetailedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentDetailedBinding.inflate(inflater)
+        binding = FragmentSavedCityWeatherDetailBinding.inflate(inflater)
         adapter = RcHoursAdapter()
 
         return binding.root
@@ -59,26 +60,30 @@ class DetailedFragment : Fragment() {
         binding.apply {
 
             //rc views and adapters inits
-            rcHoursDetailed.adapter = adapter
-            rcHoursDetailed.layoutManager = LinearLayoutManager(requireContext())
+            rcHoursDetailed2.adapter = adapter
+            rcHoursDetailed2.layoutManager = LinearLayoutManager(requireContext())
 
             if (model != null){
                 adapter.add_list(model!!.hour)
             }
 
-            tvTempDetailed.text = "${model?.day?.maxtemp_c} C°"
+            tvTempDetailed2.text = "${model?.day?.maxtemp_c} C°"
 
             //put all data from args into ui
-            tvDateDetailed.text = "${model?.date}"
-            tvConditionDetailed.text = "${model?.day?.condition?.text}"
-            sunset.text = "sunset: ${model?.astro?.sunset}"
-            sunrise.text = "sunrise: ${model?.astro?.sunrise}"
-            humidity.text = "humidity: ${model?.day?.avghumidity}%"
-            rain.text = "rain: ${model?.day?.daily_will_it_rain}%"
-            chanceOfSnow.text = "snow: ${model?.day?.daily_chance_of_snow}%"
-            wind.text = "wind: ${model?.day?.maxwind_kph} km/h"
+            tvDateDetailed2.text = "${model?.date}"
+            tvConditionDetailed2.text = "${model?.day?.condition?.text}"
+            sunset2.text = "sunset: ${model?.astro?.sunset}"
+            sunrise2.text = "sunrise: ${model?.astro?.sunrise}"
+            humidity2.text = "humidity: ${model?.day?.avghumidity}%"
+            rain2.text = "rain: ${model?.day?.daily_will_it_rain}%"
+            chanceOfSnow2.text = "snow: ${model?.day?.daily_chance_of_snow}%"
+            wind2.text = "wind: ${model?.day?.maxwind_kph} km/h"
 
-            Glide.with(requireActivity()).load("https:${model?.day?.condition?.icon}").into(imgConditionDetailed)
+            Glide.with(requireActivity()).load("https:${model?.day?.condition?.icon}").into(imgConditionDetailed2)
+
+            btBackDetailes3.setOnClickListener {
+                NavPoints.navigateTo(NavPoints.Saved_City_Weather_fragment(arg = null), requireActivity().supportFragmentManager)
+            }
         }
 
     }

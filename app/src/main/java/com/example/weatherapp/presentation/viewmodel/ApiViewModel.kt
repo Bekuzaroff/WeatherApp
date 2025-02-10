@@ -1,10 +1,13 @@
 package com.example.weatherapp.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.domain.models.WeatherResponse
 import com.example.weatherapp.domain.usecases.ForecastUseCase
 import com.example.weatherapp.utils.ResourceState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
@@ -32,7 +35,7 @@ class ApiViewModel @Inject constructor(
             if (response.isSuccessful){
                 _weather_flow.emit(ResourceState.Success(resource = response.body()))
             }else{
-                _weather_flow.emit(ResourceState.Error(m = response.message()))
+
             }
         }catch (e: Exception){
             when(e){

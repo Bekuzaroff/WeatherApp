@@ -3,6 +3,7 @@ package com.example.weatherapp.presentation.fragments
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -56,8 +57,8 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater)
 
         //rc view adapters init
-        hour_adapter = RcHoursAdapter(requireActivity())
-        day_adapter = RcDaysAdapter(events = requireActivity() as MainActivity, requireActivity())
+        hour_adapter = RcHoursAdapter()
+        day_adapter = RcDaysAdapter(events = requireActivity() as MainActivity)
 
 
         return binding.root
@@ -186,15 +187,5 @@ class HomeFragment : Fragment() {
     companion object{
         const val PREVIOUS_DATA_PREF = "PREVIOUS_DATA_PREF"
     }
-
-
-
-
-
-
-
-
-
-
 
 }

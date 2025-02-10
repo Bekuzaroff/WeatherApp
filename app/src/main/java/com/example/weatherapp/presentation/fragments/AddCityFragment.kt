@@ -1,7 +1,7 @@
 package com.example.weatherapp.presentation.fragments
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,15 +9,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentAddCityBinding
 import com.example.weatherapp.domain.models.CitiesItem
 import com.example.weatherapp.presentation.activities.MainActivity
+import com.example.weatherapp.presentation.activities.MainActivity2
 import com.example.weatherapp.presentation.adapters.CityItemAdapter
+import com.example.weatherapp.presentation.fragments.SavedCitiesFragment.Companion.SAVED_CITY
 import com.example.weatherapp.presentation.viewmodel.CitiesViewModel
 import com.example.weatherapp.utils.CitiesResourceState
-import com.example.weatherapp.utils.ResourceState
-import com.example.weatherapp.utils.consts.API_KEY_CITY
 import kotlinx.coroutines.launch
 
 class AddCityFragment : Fragment(), CityItemAdapter.CityClicks {
@@ -70,5 +69,11 @@ class AddCityFragment : Fragment(), CityItemAdapter.CityClicks {
     override fun addCity(citiesItem: CitiesItem) {
         citiesviewModel.addCity(citiesItem)
         Toast.makeText(requireContext(), "added successfully", Toast.LENGTH_LONG).show()
+    }
+
+    override fun itemClick(citiesItem: CitiesItem) {
+        val intent = Intent(requireContext(), MainActivity2::class.java)
+        intent.putExtra(SAVED_CITY, citiesItem)
+        requireActivity().startActivity(intent)
     }
 }

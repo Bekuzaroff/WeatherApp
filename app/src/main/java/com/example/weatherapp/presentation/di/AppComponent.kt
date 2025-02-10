@@ -1,6 +1,7 @@
 package com.example.weatherapp.presentation.di
 
 import com.example.weatherapp.presentation.activities.MainActivity
+import com.example.weatherapp.presentation.activities.MainActivity2
 import com.example.weatherapp.presentation.fragments.HomeFragment
 import com.example.weatherapp.presentation.fragments.SavedCitiesFragment
 import dagger.Component
@@ -9,5 +10,6 @@ import dagger.Component
 interface AppComponent {
     fun inject(homeFragment: HomeFragment)
     fun inject(activity: MainActivity)
+    fun inject(activity: MainActivity2)
     fun inject(savedCitiesFragment: SavedCitiesFragment)
 }

@@ -7,6 +7,8 @@ import com.example.weatherapp.presentation.fragments.AddCityFragment
 import com.example.weatherapp.presentation.fragments.DetailedFragment
 import com.example.weatherapp.presentation.fragments.HomeFragment
 import com.example.weatherapp.presentation.fragments.SavedCitiesFragment
+import com.example.weatherapp.presentation.fragments.SavedCityWeatherDetailFragment
+import com.example.weatherapp.presentation.fragments.SavedCityWeatherFragment
 import java.io.Serializable
 
 sealed class NavPoints() {
@@ -15,6 +17,9 @@ sealed class NavPoints() {
     class Add_cities_fr(val arg: Serializable ?= null): NavPoints()
     class Saved_cities_fr(val arg: Serializable ?= null): NavPoints()
     class Detailed_fragment(val arg: Serializable ?= null): NavPoints()
+    class Saved_City_Weather_Detailed_fragment(val arg: Serializable ?= null): NavPoints()
+    class Saved_City_Weather_fragment(val arg: Serializable ?= null): NavPoints()
+
 
     companion object{
         fun navigateTo(navPoints: NavPoints, fr_manager: FragmentManager?,
@@ -59,7 +64,20 @@ sealed class NavPoints() {
                     fr_manager!!.beginTransaction().replace(R.id.fragmenthost,
                         fr).commit()
                 }
-
+                is Saved_City_Weather_Detailed_fragment -> {
+                    navPoints.arg?.let { model ->
+                        bundle.putSerializable("weather_model", model)
+                    }
+                    val fr = SavedCityWeatherDetailFragment()
+                    fr.arguments = bundle
+                    fr_manager!!.beginTransaction().replace(R.id.host,
+                        fr).commit()
+                }
+                is Saved_City_Weather_fragment -> {
+                    val fr = SavedCityWeatherFragment()
+                    fr_manager!!.beginTransaction().replace(R.id.host,
+                        fr).commit()
+                }
             }
         }
     }

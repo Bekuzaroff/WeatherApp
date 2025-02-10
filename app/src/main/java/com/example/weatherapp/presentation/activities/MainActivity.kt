@@ -20,6 +20,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.databinding.ActivityMainBinding
 import com.example.weatherapp.domain.models.Forecastday
 import com.example.weatherapp.presentation.adapters.RcDaysAdapter
+import com.example.weatherapp.presentation.adapters.RcHoursAdapter
 import com.example.weatherapp.presentation.di.App
 import com.example.weatherapp.presentation.viewmodel.ApiVMFactory
 import com.example.weatherapp.presentation.viewmodel.ApiViewModel
@@ -113,18 +114,12 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
                             geoCoder.getFromLocation(it.result.latitude, it.result.longitude, 1)
 
                         if (address != null) {
-                            cityName.value = address!![0].adminArea
-
-                            if (cityName.value == null) {
+                            if (address!![0].adminArea != null){
+                                cityName.value = address!![0].adminArea
+                            }else if(address!![0].locality != null){
                                 cityName.value = address!![0].locality
-
-                                if (cityName.value == null) {
-                                    cityName.value = address!![0].subAdminArea
-
-                                    if (cityName.value == null) {
-                                        cityName.value = "London"
-                                    }
-                                }
+                            }else{
+                                cityName.value = address!![0].subAdminArea
                             }
                         }
 
@@ -155,14 +150,15 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
                         //GETTING THE ADDRESS AND THE CITY FROM IT
                         if (address != null) {
                             //WHEN WE CHANGE THE VALUE OF CITY NAME, IT COLLECTS IT AND GETS THA API RESPONSE
-                            cityName.value = address!![0].adminArea
-
-                            if (cityName.value == null) {
+                            if (address!![0].adminArea != null){
+                                Log.d("admin", address!![0].adminArea)
+                                cityName.value = address!![0].adminArea
+                            }else if(address!![0].locality != null){
+                                Log.d("loc", address!![0].locality)
                                 cityName.value = address!![0].locality
-
-                                if (cityName.value == null) {
-                                    cityName.value = address!![0].subAdminArea
-                                }
+                            }else{
+                                Log.d("sub", address!![0].subAdminArea)
+                                cityName.value = address!![0].subAdminArea
                             }
 
                         }
