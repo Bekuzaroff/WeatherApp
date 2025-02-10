@@ -34,8 +34,6 @@ class ApiViewModel @Inject constructor(
 
             if (response.isSuccessful){
                 _weather_flow.emit(ResourceState.Success(resource = response.body()))
-            }else{
-
             }
         }catch (e: Exception){
             when(e){

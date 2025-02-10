@@ -14,6 +14,7 @@ import com.example.weatherapp.utils.CitiesResourceState
 import com.example.weatherapp.utils.ResourceState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class CitiesViewModel @Inject constructor(
@@ -63,7 +64,11 @@ class CitiesViewModel @Inject constructor(
                 _citiesFlow.emit(CitiesResourceState.Error(m = response.message()))
             }
         }catch (e: Exception){
-            Log.d("e in cities vm", e.message.toString())
+            when(e){
+                is UnknownHostException -> {
+                    _citiesFlow.emit(CitiesResourceState.Error(m = "you don't have internet connection"))
+                }
+            }
         }
     }
 

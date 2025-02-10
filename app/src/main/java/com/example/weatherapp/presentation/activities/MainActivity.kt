@@ -247,13 +247,13 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
                     edSearchCity.visibility = View.GONE
                     btSearchCity.visibility = View.GONE
                     btBackFromSearch.visibility = View.VISIBLE
-                    if (which_fragment == 1){
-                        cityName.value = ed_city
-                    }else if (which_fragment == 2){
-                        citiesViewModel.searchCities(ed_city, API_KEY_CITY)
-                    }else if (which_fragment == 3){
-                    }
-
+                        if (which_fragment == 1){
+                            cityName.value = ed_city
+                        }else if (which_fragment == 2){
+                            citiesViewModel.searchCities(ed_city, API_KEY_CITY)
+                        }else if (which_fragment == 3){
+                            citiesViewModel.searchSavedCities(ed_city)
+                        }
                 }else{
                     Toast.makeText(this@MainActivity, "sorry but you did not input the city name",
                         Toast.LENGTH_LONG).show()
@@ -269,6 +269,7 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
                 btBackFromSearch.visibility = View.GONE
 
                 edSearchCity.text.clear()
+
 
                 if (which_fragment == 1){
                     was_searched = false
@@ -288,8 +289,10 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
 
                     NavPoints.navigateTo(NavPoints.Home_fr(), supportFragmentManager)
                 }else if (which_fragment == 2){
+                    citiesViewModel.searchCities("nothing", API_KEY_CITY)
                     was_searched = false
                 }else if (which_fragment == 3){
+                    citiesViewModel.getAllCities()
                     was_searched = false
                 }
             }
