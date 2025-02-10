@@ -1,7 +1,6 @@
 package com.example.weatherapp.presentation.fragments
 
 import android.annotation.SuppressLint
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.weatherapp.databinding.FragmentDetailedBinding
 import com.example.weatherapp.domain.models.Forecastday
-import com.example.weatherapp.presentation.activities.MainActivity
 import com.example.weatherapp.presentation.adapters.RcHoursAdapter
 
 

@@ -20,7 +20,6 @@ import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.databinding.ActivityMainBinding
 import com.example.weatherapp.domain.models.Forecastday
 import com.example.weatherapp.presentation.adapters.RcDaysAdapter
-import com.example.weatherapp.presentation.adapters.RcHoursAdapter
 import com.example.weatherapp.presentation.di.App
 import com.example.weatherapp.presentation.viewmodel.ApiVMFactory
 import com.example.weatherapp.presentation.viewmodel.ApiViewModel
@@ -90,6 +89,7 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
 
             }
         }
+
 
 
         //TODO LAUNCHER FOR REQUEST PERMISSIONS
@@ -303,6 +303,15 @@ class MainActivity : AppCompatActivity(), RcDaysAdapter.ClickEvents {
         }
 
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        lifecycleScope.launch {
+            cityName.collect {
+                apiViewModel.getWeatherForecast(API_KEY, it)
+            }
+        }
     }
 
     private fun isOnline(): Boolean {

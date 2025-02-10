@@ -12,8 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.ActivityMain2Binding
-import com.example.weatherapp.databinding.ActivityMainBinding
-import com.example.weatherapp.domain.models.Cities
 import com.example.weatherapp.domain.models.CitiesItem
 import com.example.weatherapp.domain.models.Forecastday
 import com.example.weatherapp.presentation.activities.MainActivity.Companion.CACHE_PREFS
